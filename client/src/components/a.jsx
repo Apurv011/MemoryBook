@@ -12,10 +12,10 @@ function A(props){
 
   const location = useLocation();
   let pathName = location.pathname;
-  const noteId = pathName.substr(3);
+  const memoryId = pathName.substr(3);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/note/" + noteId).then(res => {
+    axios.get("http://localhost:5000/memory/" + memoryId).then(res => {
           setAuthor(res.data.author_name);
           setTitle(res.data.title);
           setContent(res.data.content);

@@ -1,16 +1,16 @@
 import React from "react";
 import { useHistory } from 'react-router-dom';
 
-function SingleNote(props) {
+function SingleMemory(props) {
 
   let history = useHistory();
   let author = props.author;
 
-  function deleteNote() {
+  function deleteMemory() {
     props.onDelete(props.id);
   }
 
-  function getCompleteNote(){
+  function getCompleteMemory(){
       history.push('/a/' + props.id);
   }
 
@@ -19,11 +19,11 @@ function SingleNote(props) {
         <img src={"http://localhost:5000/" + props.image} className="card-img-1" alt="..."/>
         <h5 className="card-title" style={{margin: "15px"}}>{props.title}</h5>
         <p style={{margin: "15px"}}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</p>
-        <button className="btn btn-light" style={{marginLeft: "5px"}} onClick={getCompleteNote}>Read More</button>
-        <button style={props.btnTitle==="Delete" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-light" onClick={deleteNote}>{props.btnTitle}</button>
+        <button className="btn btn-light" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>
+        <button style={props.btnTitle==="Delete" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-light" onClick={deleteMemory}>{props.btnTitle}</button>
       </div>
   );
 }
 
 
-export default SingleNote;
+export default SingleMemory;

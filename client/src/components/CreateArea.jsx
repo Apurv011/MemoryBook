@@ -5,7 +5,7 @@ function CreateArea(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const [notes, setNotes] = useState({
+  const [memories, setMemories] = useState({
     title: "",
     content: "",
     user_id: "",
@@ -25,22 +25,22 @@ function CreateArea(props) {
   return date;
 }
 
-  function sumbitNote(event) {
+  function sumbitMemory(event) {
 
     const formData = new FormData();
 
-    formData.append("title", notes.title);
-    formData.append("content", notes.content);
-    formData.append("user_id", notes.user_id);
-    formData.append("date", notes.date);
-    formData.append("author_name", notes.author_name);
-    formData.append("image", notes.image);
+    formData.append("title", memories.title);
+    formData.append("content", memories.content);
+    formData.append("user_id", memories.user_id);
+    formData.append("date", memories.date);
+    formData.append("author_name", memories.author_name);
+    formData.append("image", memories.image);
 
-    axios.post("http://localhost:5000/note/createnote", formData).then(response => {
+    axios.post("http://localhost:5000/memory/creatememory", formData).then(response => {
         console.log(response.data);
     });
 
-    setNotes({
+    setMemories({
       title: "",
       content: "",
       user_id:"",
@@ -53,7 +53,7 @@ function CreateArea(props) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setNotes((preValues) => {
+    setMemories((preValues) => {
       return {
         ...preValues,
         [name]: value,
@@ -69,7 +69,7 @@ function CreateArea(props) {
     setImgName(event.target.files[0]);
 
     const { name, value } = event.target;
-    setNotes((preValues) => {
+    setMemories((preValues) => {
       return {
         ...preValues,
         [name]: value,
@@ -94,15 +94,15 @@ function CreateArea(props) {
             onChange={handleChange}
             name="title"
             placeholder="Title"
-            value={notes.title} />
+            value={memories.title} />
           )
         }
         <textarea
           name="content"
           onClick={expand}
           onChange={handleChange}
-          value={notes.content}
-          placeholder="Take a note..."
+          value={memories.content}
+          placeholder="Write here..."
           rows={isExpanded===true ? 3 : 1}
         />
         {isExpanded &&
@@ -110,7 +110,7 @@ function CreateArea(props) {
             <input type="file" multiple name="image" onChange={upload} />
           )
         }
-        <button className="create-note-btn" onClick={sumbitNote}>Add</button>
+        <button className="create-note-btn" onClick={sumbitMemory}>Add</button>
       </form>
     </div>
   );

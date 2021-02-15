@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 require("dotenv").config();
 
 const userRoutes = require('./routes/user');
-const notesRoute = require('./routes/note');
+const memoriesRoute = require('./routes/memory');
 
 mongoose.connect("mongodb://localhost:27017/MERN", {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use('/user', userRoutes);
-app.use('/note', notesRoute);
+app.use('/memory', memoriesRoute);
 
 // Handle Error Requests
 app.use((req, res, next) => {

@@ -17,7 +17,7 @@ function LogInForm(props){
           console.log(response.data);
           props.getUser(response.data.user._id, response.data.user.username);
           props.changeAuthStatus();
-          history.push('/notes');
+          history.push('/memories');
       }
       else{
         console.log(response.data);

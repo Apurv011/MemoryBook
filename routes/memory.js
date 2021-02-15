@@ -21,14 +21,14 @@ const upload = multer({
     // fileFilter: fileFilter
 });
 
-const NotesController = require('../controllers/note');
+const MemoriesController = require('../controllers/memory');
 
-router.get('/allnotes', NotesController.getAllNotes);
+router.get('/allmemories', MemoriesController.getAllMemories);
 
-router.get('/:noteId', NotesController.getOneNote);
+router.get('/:memoryId', MemoriesController.getOneMemory);
 
-router.post('/createnote', upload.single('image'), NotesController.createOneNote);
+router.post('/creatememory', upload.single('image'), MemoriesController.createOneMemory);
 
-router.delete('/notes/delete/:noteId', NotesController.deleteOneNote);
+router.delete('/memories/delete/:memoryId', MemoriesController.deleteOneMemory);
 
 module.exports = router;
