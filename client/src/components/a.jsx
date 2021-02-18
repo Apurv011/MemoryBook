@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Fade from 'react-reveal/Fade';
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -25,16 +26,20 @@ function A(props){
   });
 
   return (
-    <div className="completeNote col-md-9 col-sm-12">
-    <img className="completeNoteImg col-md-12 col-sm-12" src={"http://localhost:5000/" + image } alt="..." />
-      <h1 style={{margin: "20px 10px"}}> {title} </h1>
-      <p class="card-text"  style={{margin: "20px 10px"}}>
-        <small><em>Author: {author}</em></small>
-      </p>
-      <p className="card-text"  style={{margin: "20px 10px"}}>
-        <small className="text-muted">{date}</small>
-      </p>
-      <p className="c"  style={{margin: "20px 10px"}}> {content} </p>
+    <div>
+      <Fade left>
+        <div className="completeNote col-md-9 col-sm-12">
+        <img className="completeNoteImg col-md-12 col-sm-12" src={"http://localhost:5000/" + image } alt="..." />
+          <h1 style={{margin: "20px 10px"}}> {title} </h1>
+          <p class="card-text"  style={{margin: "20px 10px"}}>
+            <small><em>Author: {author}</em></small>
+          </p>
+          <p className="card-text"  style={{margin: "20px 10px"}}>
+            <small className="text-muted">{date}</small>
+          </p>
+          <p className="c"  style={{margin: "20px 10px"}}> {content} </p>
+        </div>
+      </Fade>
     </div>
   );
 }
