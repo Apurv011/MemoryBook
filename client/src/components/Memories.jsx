@@ -11,8 +11,8 @@ function Memories(props) {
 
   useEffect(() => {
     axios.get("http://localhost:5000/memory/allmemories").then(res => {
-      setAllMemories(res.data.memories);
-    });
+      setAllMemories(res.data.memories)
+    }).catch(error => console.log(error))
   });
 
   return (
