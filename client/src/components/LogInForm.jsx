@@ -58,7 +58,7 @@ function LogInForm(props){
           <label><b>Password</b></label>
           <input onChange={handleChange} name="password" value={user.password} type="password" className="form-control" id="exampleInputPassword1" />
         </div>
-        <button type="submit" onClick={loginUser} class="btn btn-dark">Log In</button>
+        <button type="submit" onClick={loginUser} className="btn btn-outline-dark">Log In</button>
       </form>
       <Link to="/signup">
         <h1 id="emailHelp" className="form-text text-muted small-text" >

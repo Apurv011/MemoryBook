@@ -6,7 +6,7 @@ import A from "./a";
 import UserMemories from "./UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
-
+import LandingPage from "./LandingPage";
 
 function App() {
 
@@ -25,10 +25,9 @@ function App() {
 
   return (
     <Router>
-      <Route path="/" exact render={(props) => (
-            <SignUpForm changeAuthStatus={checkAuth} />
-          )}
-       />
+      <Route path="/landingPage" exact component={LandingPage} />
+      <Route path="/" exact component={LandingPage} />
+        
       <Route path="/signup" exact render={(props) => (
             <SignUpForm changeAuthStatus={checkAuth} />
           )}

@@ -29,15 +29,17 @@ function A(props){
     <div>
       <Fade left>
         <div className="completeNote col-md-9 col-sm-12">
-        <img className="completeNoteImg col-md-12 col-sm-12" src={"http://localhost:5000/" + image } alt="..." />
-          <h1 style={{margin: "20px 10px"}}> {title} </h1>
-          <p class="card-text"  style={{margin: "20px 10px"}}>
-            <small><em>Author: {author}</em></small>
-          </p>
-          <p className="card-text"  style={{margin: "20px 10px"}}>
-            <small className="text-muted">{date}</small>
-          </p>
-          <p className="c"  style={{margin: "20px 10px"}}> {content} </p>
+        <img className="completeNoteImg col-md-9 col-sm-9" src={"http://localhost:5000/" + image } alt="..." />
+          <div style={{paddingLeft: "140px", paddingRight: "100px"}}>
+            <h1 style={{marginTop:"35px"}}> {title} </h1>
+            <p>
+              <em>Author: {author}</em>
+            </p>
+            <p>
+              <small className="text-muted" style={{textAlign: "center"}}>{date}</small>
+            </p>
+            <p className="c"> {content} </p>
+          </div>
         </div>
       </Fade>
     </div>

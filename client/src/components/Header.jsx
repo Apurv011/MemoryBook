@@ -7,11 +7,11 @@ function Header(props) {
 
   function logout(){
     props.checkAuth();
-    history.push('/login');
+    history.push('/LandingPage');
   }
 
   return (
-  <nav className="navbar navbar-light navbar-expand-lg">
+  <nav className="navbar navbar-light navbar-expand-lg header">
     <h3 className="title">Memory-Book</h3>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>

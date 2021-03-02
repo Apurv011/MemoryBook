@@ -96,7 +96,7 @@ function SignUpForm(props){
           <input type="password" onChange={confirmPsswordChange} className="form-control" value={confirmPassword} />
           <p className="form-text" style={{color: "#ff0000", fontSize:"12px"}}>{confirmPsswordError}</p>
         </div>
-        <button type="submit" onClick={registerUser} className="btn btn-dark">Sign-Up</button>
+        <button type="submit" onClick={registerUser} className="btn btn-outline-dark">Sign-Up</button>
       </form>
       <Link to="/login">
         <h1 id="emailHelp" className="form-text text-muted small-text">

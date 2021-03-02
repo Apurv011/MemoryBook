@@ -103,7 +103,7 @@ function CreateArea(props) {
           onChange={handleChange}
           value={memories.content}
           placeholder="Write here..."
-          rows={isExpanded===true ? 3 : 1}
+          rows={isExpanded===true ? 6 : 1}
         />
         {isExpanded &&
           (
