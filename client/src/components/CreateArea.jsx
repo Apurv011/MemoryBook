@@ -14,7 +14,13 @@ function CreateArea(props) {
     image:""
   });
 
-  const [imgName, setImgName] = useState("");
+  const [days, setDays] = useState({
+    title: "",
+    content: "",
+    user_id: "",
+    date:"",
+  });
+
 
   function getDate(){
   let date_ob = new Date();
@@ -45,13 +51,30 @@ function CreateArea(props) {
       content: "",
       user_id:"",
       author_name:"",
+      date:"",
+      image:""
+    });
+
+    event.preventDefault();
+  }
+
+  function sumbitDay(event) {
+
+    axios.post("http://localhost:5000/diary/createday", days).then(response => {
+        console.log(response.data);
+    });
+
+    setDays({
+      title: "",
+      content: "",
+      user_id:"",
       date:""
     });
 
     event.preventDefault();
   }
 
-  function handleChange(event) {
+  function handleMemoryChange(event) {
     const { name, value } = event.target;
     setMemories((preValues) => {
       return {
@@ -64,9 +87,19 @@ function CreateArea(props) {
     });
   }
 
-  function upload(event){
+  function handleDayChange(event) {
+    const { name, value } = event.target;
+    setDays((preValues) => {
+      return {
+        ...preValues,
+        [name]: value,
+        user_id: props.userId,
+        date: getDate()
+      };
+    });
+  }
 
-    setImgName(event.target.files[0]);
+  function upload(event){
 
     const { name, value } = event.target;
     setMemories((preValues) => {
@@ -91,26 +124,26 @@ function CreateArea(props) {
         {isExpanded &&
           (
             <input
-            onChange={handleChange}
+            onChange={props.isImg ? handleMemoryChange : handleDayChange}
             name="title"
             placeholder="Title"
-            value={memories.title} />
+            value={props.isImg ? memories.title : days.title} />
           )
         }
         <textarea
           name="content"
           onClick={expand}
-          onChange={handleChange}
-          value={memories.content}
+          onChange={props.isImg ? handleMemoryChange : handleDayChange}
+          value={props.isImg ? memories.content : days.content}
           placeholder="Write here..."
           rows={isExpanded===true ? 6 : 1}
         />
-        {isExpanded &&
+        {props.isImg && isExpanded &&
           (
             <input type="file" multiple name="image" onChange={upload} />
           )
         }
-        <button className="create-note-btn" onClick={sumbitMemory}>Add</button>
+        <button className="create-note-btn" onClick={props.isImg ? sumbitMemory : sumbitDay}>Add</button>
       </form>
     </div>
   );

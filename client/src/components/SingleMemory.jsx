@@ -17,13 +17,15 @@ function SingleMemory(props) {
   }
 
   return (
-      <div className="singleCard">
+      <div>
         <Slide left>
-          <img src={"http://localhost:5000/" + props.image} className="card-img-1" alt="..."/>
-          <h5 className="card-title" style={{margin: "15px"}}>{props.title}</h5>
-          <p style={{margin: "15px"}}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</p>
-          <button className="btn btn-outline-dark" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>
-          <button style={props.btnTitle==="Delete" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-outline-dark" onClick={deleteMemory}>{props.btnTitle}</button>
+        <div className="singleCard">
+            <img src={"http://localhost:5000/" + props.image} className="card-img-1" alt="..."/>
+            <h5 className="card-title" style={{margin: "15px"}}>{props.title}</h5>
+            <p style={{margin: "15px"}}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</p>
+            <button className="btn btn-outline-dark" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>
+            <button style={props.btnTitle==="Delete" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-outline-dark" onClick={deleteMemory}>{props.btnTitle}</button>
+        </div>
         </Slide>
       </div>
   );

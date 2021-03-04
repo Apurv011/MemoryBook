@@ -22,7 +22,10 @@ function Header(props) {
           <Link className="nav-link " to={props.hOption==="My Memories" ? "/myMemories" : "/memories"}>{props.hOption}</Link>
         </li>
         <li className="nav-item">
-          <button className="nav-link " style={{backgroundColor: "#fff", border: "None", outline: "None"}} onClick={logout}>Logout</button>
+          <Link className="nav-link " to={props.hOption2==="My Diary" ? "/myDiary" : "/memories"}>{props.hOption2}</Link>
+        </li>
+        <li className="nav-item">
+          <button className="nav-link btn btn-link" onClick={logout}>Logout</button>
         </li>
       </ul>
     </div>

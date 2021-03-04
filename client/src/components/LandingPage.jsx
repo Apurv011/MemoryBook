@@ -14,18 +14,24 @@ function LandingPage(){
   }
 
   return (
-    <div className="landingPage">
-      <p className="landingPageTitle"> Memory Book </p>
-      <p className="landingPageSubTitle">❝A moment lasts all of a second, but the memory lives on forever.❞</p>
-      <div className="landingPageCard" style={{ transform: "skewY(1deg)", marginLeft:"420px", padding: "15px"}}>
-        <p style={{marginTop:"35px"}} className="subTitle">Don't have an account?</p>
-        <p className="subTitle">Sign up now and join the world of Memories!</p>
-        <button style={{marginTop: "50px"}} type="button" onClick={signup} className="btn btn-outline-dark btn-lg">Sign Up</button>
+    <div className="landingPage row">
+      <div className="col-lg-4 col-md-6">
+        <p className="landingPageTitle"><strong> Memory Book </strong></p>
+        <p className="landingPageSubTitle"><strong>❝A moment lasts all of a second, but the memory lives on forever.❞</strong></p>
       </div>
-      <div className="landingPageCard" style={{ transform: "skewY(-1deg)" }}>
-        <p style={{marginTop:"55px"}} className="subTitle">Already have an account?</p>
-        <p className="subTitle">Logn In to the world of Memories!</p>
-        <button style={{marginTop: "70px"}} type="button" onClick={login} className="btn btn-outline-dark btn-lg">Log In</button>
+      <div className="col-lg-8 col-md-6">
+        <div className="row">
+          <div className="landingPageCard col-lg-5">
+            <p style={{marginTop:"52px"}} className="subTitle"><strong>Don't have an account?</strong></p>
+            <p className="subTitle"><strong>Sign up now and join the world of Memories!</strong></p>
+            <button style={{marginTop: "45px"}} type="button" onClick={signup} className="btn btn-outline-dark btn-lg">Sign Up</button>
+          </div>
+          <div className="landingPageCard col-lg-5">
+            <p style={{marginTop:"55px"}} className="subTitle"><strong>Already have an account?</strong></p>
+            <p className="subTitle"><strong>Logn In to the world of Memories!</strong></p>
+            <button style={{marginTop: "70px"}} type="button" onClick={login} className="btn btn-outline-dark btn-lg">Log In</button>
+          </div>
+        </div>
       </div>
     </div>
   );

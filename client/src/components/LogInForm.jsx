@@ -61,9 +61,9 @@ function LogInForm(props){
         <button type="submit" onClick={loginUser} className="btn btn-outline-dark">Log In</button>
       </form>
       <Link to="/signup">
-        <h1 id="emailHelp" className="form-text text-muted small-text" >
+        <p id="emailHelp" className="form-text text-muted small-text" >
           Don't have an account? Click here to create!
-        </h1>
+        </p>
       </Link>
     </div>
   );

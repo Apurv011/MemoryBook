@@ -17,11 +17,12 @@ function Memories(props) {
 
   return (
     <div>
-      <Header checkAuth={props.changeAuthStatus} hOption="My Memories"/>
+      <Header checkAuth={props.changeAuthStatus} hOption="My Memories" hOption2="My Diary"/>
       <h2 className="userName">Hello, {props.uName} </h2>
       <CreateArea className="createnote"
                   userId={props.uID}
-                  userName={props.uName} />
+                  userName={props.uName}
+                  isImg={true} />
         {allMemories.map((memory, index) => {
           return (
             <SingleMemory
