@@ -1,11 +1,8 @@
 import Slide from 'react-reveal/Slide';
 import React from "react";
 
-import { useHistory } from 'react-router-dom';
 
 function SingleDay(props) {
-
-  let history = useHistory();
 
   function getData(){
     props.onRead(props.id);

@@ -8,7 +8,7 @@ const userRoutes = require('./routes/user');
 const memoriesRoute = require('./routes/memory');
 const diaryRoute = require('./routes/diary');
 
-mongoose.connect("mongodb://localhost:27017/MERN", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_URL_DEV, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const app = express();
 // Log request data

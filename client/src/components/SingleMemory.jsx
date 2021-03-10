@@ -13,7 +13,7 @@ function SingleMemory(props) {
   }
 
   function getCompleteMemory(){
-      history.push('/a/' + props.id);
+      history.push('/fullMemory/' + props.id);
   }
 
   return (

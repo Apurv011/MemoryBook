@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SignUpForm from "./SignUpForm";
 import LogInForm from "./LogInForm";
 import Memories from "./Memories";
-import A from "./a";
+import FullMemory from "./FullMemory";
 import UserMemories from "./UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
@@ -40,7 +40,7 @@ function App() {
       <ProtectedRoute path="/memories" exact component={Memories} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
       <ProtectedRoute path="/myMemories" exact component={UserMemories} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
       <ProtectedRoute path="/myDiary" exact component={Diary} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
-      <ProtectedRoute path="/a/:pID" exact component={A} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
+      <ProtectedRoute path="/fullMemory/:pID" exact component={FullMemory} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
     </Router>
 
   );

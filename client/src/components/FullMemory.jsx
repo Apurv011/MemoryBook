@@ -3,7 +3,7 @@ import Fade from 'react-reveal/Fade';
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-function A(props){
+function FullMemory(props){
 
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
@@ -13,7 +13,7 @@ function A(props){
 
   const location = useLocation();
   let pathName = location.pathname;
-  const memoryId = pathName.substr(3);
+  const memoryId = pathName.substr(11);
 
   useEffect(() => {
     axios.get("http://localhost:5000/memory/" + memoryId).then(res => {
@@ -47,4 +47,4 @@ function A(props){
 }
 
 
-export default A;
+export default FullMemory;
