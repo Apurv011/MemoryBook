@@ -47,7 +47,7 @@ function LogInForm(props){
 
   return (
     <div>
-      <h2 className="Heading">Log In</h2>
+      <h1 className="Heading">Log In</h1>
       <form className="login-signup form-container" >
         <div className="form-group">
           <label><b>Email address</b></label>
