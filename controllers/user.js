@@ -23,6 +23,8 @@ exports.signUp = (req, res, next) => {
                             email: req.body.email,
                             password: hash,
                             username: req.body.username,
+                            bio: req.body.bio,
+                            interests: req.body.interests
                         });
                         user
                             .save()
@@ -57,9 +59,6 @@ exports.logIn = (req, res, next) => {
         .exec()
         .then(user => {
             if (user.length < 1) {
-                // const error = new Error();
-                // error.message = 'No user found!';
-                // throw error;
                 return res.status(404).json({
                     errror: "No user found!"
                 });
@@ -115,19 +114,11 @@ exports.deleteUser = (req, res, next) => {
         });
 };
 
-// function createUser(email, hash) {
-//     return new User({
-//         _id: new mongoose.Types.ObjectId(),
-//         email: email,
-//         password: hash
-//     });
-// }
-
 exports.getOneUser = (req, res, next) => {
     const userId = req.params.userId;
     User
         .findById(userId)
-        .select('_id email')
+        .select('_id username mail bio interests image')
         .exec()
         .then(result => {
             if(!result){
@@ -150,6 +141,22 @@ exports.editUser = (req, res, next) => {
     const userId = req.params.userId;
     User
         .update({ _id: userId }, { $set: req.body })
+        .exec()
+        .then(updatedUser => {
+            res.status(200).json({
+				message: 'Updated User Successfully!',
+				user: updatedUser
+			});
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+
+exports.editUserWithPic = (req, res, next) => {
+    const userId = req.params.userId;
+    User
+        .update({ _id: userId }, {image: req.file.path} ,{ $set: req.body })
         .exec()
         .then(updatedUser => {
             res.status(200).json({

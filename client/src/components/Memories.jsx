@@ -16,7 +16,7 @@ function Memories(props) {
 
   return (
     <div>
-      <Header checkAuth={props.changeAuthStatus} hOption="My Memories" hOption2="My Diary"/>
+      <Header checkAuth={props.changeAuthStatus} uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
       <h2 className="userName">Hello, {props.uName} </h2>
       <CreateArea className="createnote"
                   userId={props.uID}
@@ -27,6 +27,7 @@ function Memories(props) {
             <SingleMemory
               key={index}
               id={memory._id}
+              uID={memory.user_id}
               title={memory.title}
               btnTitle={'Read More'}
               content={memory.content}

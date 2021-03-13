@@ -7,6 +7,7 @@ import UserMemories from "./UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import LandingPage from "./LandingPage";
+import User from "./User";
 import Diary from "./diary";
 
 function App() {
@@ -14,14 +15,16 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
+  const [userToken, setUserToken] = useState("");
 
   function checkAuth(){
     setIsAuth(!isAuth);
   }
 
-  function getCurrentUser(id, uName){
+  function getCurrentUser(id, uName, uToken){
     setUserName(uName);
     setUserId(id);
+    setUserToken(uToken);
   }
 
   return (
@@ -41,6 +44,7 @@ function App() {
       <ProtectedRoute path="/myMemories" exact component={UserMemories} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
       <ProtectedRoute path="/myDiary" exact component={Diary} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
       <ProtectedRoute path="/fullMemory/:pID" exact component={FullMemory} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
+      <ProtectedRoute path="/user/:userID" exact component={User} uID={userId} uName={userName} uToken={userToken} changeAuthStatus={checkAuth} isAuth={isAuth} />
     </Router>
 
   );

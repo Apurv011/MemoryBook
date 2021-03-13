@@ -15,10 +15,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    // limits: {
-    //     fileSize: 1024 * 1024 * 5
-    // }
-    // fileFilter: fileFilter
 });
 
 const MemoriesController = require('../controllers/memory');
@@ -28,6 +24,8 @@ router.get('/allmemories', MemoriesController.getAllMemories);
 router.get('/:memoryId', MemoriesController.getOneMemory);
 
 router.post('/creatememory', upload.single('image'), MemoriesController.createOneMemory);
+
+router.post('/createNewMemory', MemoriesController.createOneMemoryNoImg);
 
 router.delete('/memories/delete/:memoryId', MemoriesController.deleteOneMemory);
 

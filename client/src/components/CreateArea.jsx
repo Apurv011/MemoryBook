@@ -4,6 +4,7 @@ import axios from "axios";
 function CreateArea(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isImgSelected, setIsImgSelected] = useState(false);
 
   const [memories, setMemories] = useState({
     title: "",
@@ -33,18 +34,25 @@ function CreateArea(props) {
 
   function sumbitMemory(event) {
 
-    const formData = new FormData();
+    if(isImgSelected){
+      const formData = new FormData();
 
-    formData.append("title", memories.title);
-    formData.append("content", memories.content);
-    formData.append("user_id", memories.user_id);
-    formData.append("date", memories.date);
-    formData.append("author_name", memories.author_name);
-    formData.append("image", memories.image);
+      formData.append("title", memories.title);
+      formData.append("content", memories.content);
+      formData.append("user_id", memories.user_id);
+      formData.append("date", memories.date);
+      formData.append("author_name", memories.author_name);
+      formData.append("image", memories.image);
 
-    axios.post("http://localhost:5000/memory/creatememory", formData).then(response => {
-        console.log(response.data);
-    });
+      axios.post("http://localhost:5000/memory/creatememory", formData).then(response => {
+          console.log(response.data);
+      });
+    }
+    else{
+      axios.post("http://localhost:5000/memory/createNewMemory", memories).then(response => {
+          console.log(response.data);
+      });
+    }
 
     setMemories({
       title: "",
@@ -100,7 +108,7 @@ function CreateArea(props) {
   }
 
   function upload(event){
-
+    setIsImgSelected(true);
     const { name, value } = event.target;
     setMemories((preValues) => {
       return {

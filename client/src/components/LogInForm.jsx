@@ -8,14 +8,15 @@ function LogInForm(props){
 
   const [user, setUser] = useState({
       email: "",
-      password:""
+      password:"",
+      token:""
   });
 
   function loginUser(event) {
     axios.post("http://localhost:5000/user/login", user).then(response => {
       if(response.data.message === 'Auth Successful!'){
           console.log(response.data);
-          props.getUser(response.data.user._id, response.data.user.username);
+          props.getUser(response.data.user._id, response.data.user.username, response.data.token);
           props.changeAuthStatus();
           history.push('/memories');
       }
@@ -26,7 +27,8 @@ function LogInForm(props){
 
     setUser({
       email: "",
-      password:""
+      password:"",
+      token:""
     });
 
     event.preventDefault();

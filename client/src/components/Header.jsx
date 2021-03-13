@@ -22,7 +22,10 @@ function Header(props) {
           <Link className="nav-link " to={props.hOption==="My Memories" ? "/myMemories" : "/memories"}>{props.hOption}</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link " to={props.hOption2==="My Diary" ? "/myDiary" : "/memories"}>{props.hOption2}</Link>
+          <Link className="nav-link" to={props.hOption2==="My Diary" ? "/myDiary" : "/memories"}>{props.hOption2}</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link " to={props.hOption3==="My Profile" ? "/user/" + props.uID : "/memories"}>{props.hOption3}</Link>
         </li>
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={logout}>Logout</button>

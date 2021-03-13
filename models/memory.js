@@ -7,7 +7,7 @@ const memorySchema = mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   date: { type: String },
-  image: { type: String }
+  image: { type: String, default:"" }
 });
 
 module.exports = mongoose.model('Memory', memorySchema);
