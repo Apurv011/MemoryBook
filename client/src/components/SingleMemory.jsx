@@ -20,8 +20,7 @@ function SingleMemory(props) {
       <div>
         <Slide left>
         <div className="singleCard">
-            <img src={props.image==="" ? "https://images.wallpapersden.com/image/download/small-memory_am1pa2aUmZqaraWkpJRobWllrWdma2U.jpg"
-                                       : "http://localhost:5000/" + props.image} className="card-img-1" alt="..."/>
+            <img src={"http://localhost:5000/" + props.image} className="card-img-1" alt="..."/>
             <h5 className="card-title" style={{margin: "7px"}}>{props.title}</h5>
             <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}} to={"/user/"+ props.uID}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</Link>
             <button className="btn btn-outline-dark" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>

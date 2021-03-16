@@ -65,30 +65,6 @@ exports.createOneMemory = (req, res, next) => {
 		});
 };
 
-exports.createOneMemoryNoImg = (req, res, next) => {
-
-	const memory = createMemoryNoImg(req);
-
-	memory
-		.save()
-		.then(memory => {
-			res.status(200).json({
-				message: 'Memory Added Successfully!',
-				memory: {
-					_id: memory._id,
-					user_id: memory.user_id,
-					title: memory.title,
-					content: memory.content,
-					date: memory.date,
-					image: memory.image
-				}
-			});
-		})
-		.catch(error => {
-			next(error);
-		});
-};
-
 exports.deleteOneMemory = (req, res, next) => {
 	const memoryId = req.params.memoryId;
 	Memory
@@ -107,6 +83,13 @@ exports.deleteOneMemory = (req, res, next) => {
 
 
 function createMemory(req) {
+	var img;
+	if (typeof req.file === "undefined"){
+  	img = "images\\default_memory_pic.jpg";
+  }
+  else{
+    img = req.file.path;
+  }
 	return new Memory({
 		_id: new mongoose.Types.ObjectId(),
 		user_id: req.body.user_id,
@@ -114,18 +97,6 @@ function createMemory(req) {
 		content: req.body.content,
 		author_name: req.body.author_name,
 		date: req.body.date,
-		image	: req.file.path
-	});
-}
-
-function createMemoryNoImg(req) {
-	return new Memory({
-		_id: new mongoose.Types.ObjectId(),
-		user_id: req.body.user_id,
-		title: req.body.title,
-		content: req.body.content,
-		author_name: req.body.author_name,
-		date: req.body.date,
-		image: req.body.image
+		image	: img
 	});
 }

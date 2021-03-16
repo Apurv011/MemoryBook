@@ -4,7 +4,6 @@ import axios from "axios";
 function CreateArea(props) {
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isImgSelected, setIsImgSelected] = useState(false);
 
   const [memories, setMemories] = useState({
     title: "",
@@ -34,7 +33,6 @@ function CreateArea(props) {
 
   function sumbitMemory(event) {
 
-    if(isImgSelected){
       const formData = new FormData();
 
       formData.append("title", memories.title);
@@ -47,12 +45,6 @@ function CreateArea(props) {
       axios.post("http://localhost:5000/memory/creatememory", formData).then(response => {
           console.log(response.data);
       });
-    }
-    else{
-      axios.post("http://localhost:5000/memory/createNewMemory", memories).then(response => {
-          console.log(response.data);
-      });
-    }
 
     setMemories({
       title: "",
@@ -108,7 +100,6 @@ function CreateArea(props) {
   }
 
   function upload(event){
-    setIsImgSelected(true);
     const { name, value } = event.target;
     setMemories((preValues) => {
       return {

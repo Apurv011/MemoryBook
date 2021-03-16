@@ -25,8 +25,6 @@ router.get('/:memoryId', MemoriesController.getOneMemory);
 
 router.post('/creatememory', upload.single('image'), MemoriesController.createOneMemory);
 
-router.post('/createNewMemory', MemoriesController.createOneMemoryNoImg);
-
 router.delete('/memories/delete/:memoryId', MemoriesController.deleteOneMemory);
 
 module.exports = router;
