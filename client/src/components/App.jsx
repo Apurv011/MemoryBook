@@ -5,7 +5,6 @@ import Memories from "./Memories";
 import FullMemory from "./FullMemory";
 import UserMemories from "./UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import ProtectedRoute from "./ProtectedRoute";
 import LandingPage from "./LandingPage";
 import User from "./User";
 import Diary from "./diary";
@@ -29,22 +28,43 @@ function App() {
 
   return (
     <Router>
-      <Route path="/landingPage" exact component={LandingPage} />
-      <Route path="/" exact component={LandingPage} />
 
-      <Route path="/signup" exact render={(props) => (
-            <SignUpForm changeAuthStatus={checkAuth} />
-          )}
-      />
-      <Route path="/login" exact render={(props) => (
-          <LogInForm changeAuthStatus={checkAuth} getUser={getCurrentUser}/>
-        )}
-      />
-      <ProtectedRoute path="/memories" exact component={Memories} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
-      <ProtectedRoute path="/myMemories" exact component={UserMemories} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
-      <ProtectedRoute path="/myDiary" exact component={Diary} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} />
-      <ProtectedRoute path="/fullMemory/:pID" exact component={FullMemory} uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} />
-      <ProtectedRoute path="/user/:userID" exact component={User} uID={userId} uName={userName} uToken={userToken} changeAuthStatus={checkAuth} isAuth={isAuth} />
+      <Route path="/" exact>
+        <LandingPage />
+      </Route>
+
+      <Route path="/landingPage" exact>
+        <LandingPage />
+      </Route>
+
+      <Route path="/signup" exact>
+        <SignUpForm changeAuthStatus={checkAuth} />
+      </Route>
+
+      <Route path="/login" exact>
+        <LogInForm changeAuthStatus={checkAuth} getUser={getCurrentUser}/>
+      </Route>
+
+      <Route path="/memories" exact>
+        <Memories  uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+      </Route>
+
+      <Route path="/myMemories" exact>
+        <UserMemories exact component={UserMemories} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+      </Route>
+
+      <Route path="/myDiary" exact>
+        <Diary uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+      </Route>
+
+      <Route path="/fullMemory/:pID" exact>
+        <FullMemory uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+      </Route>
+
+      <Route path="/user/:userID" exact>
+        <User uID={userId} uName={userName} uToken={userToken} changeAuthStatus={checkAuth} isAuth={isAuth}/>
+      </Route>
+
     </Router>
 
   );

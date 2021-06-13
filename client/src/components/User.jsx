@@ -41,7 +41,7 @@ function User(props){
           });
       });
 
-    axios.get("http://localhost:5000/memory/allmemories").then(res => {
+    axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
       console.log(res.data);
       setUserMemories(() => {
         return res.data.memories.filter((memory) => {

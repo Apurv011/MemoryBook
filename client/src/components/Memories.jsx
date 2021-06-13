@@ -3,15 +3,26 @@ import Header from "./Header";
 import SingleMemory from "./SingleMemory";
 import CreateArea from "./CreateArea";
 import axios from "axios";
+import {useHistory} from "react-router-dom";
 
 function Memories(props) {
+
+  let history = useHistory();
 
   const [allMemories, setAllMemories] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/memory/allmemories").then(res => {
+
+    const config = {
+      headers: { "Authorization": "Bearer " + props.uToken }
+    };
+
+    axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
       setAllMemories(res.data.memories)
-    }).catch(error => console.log(error))
+    }).catch((error) => {
+      console.log(error.response.status);
+      history.push("/login");
+    });
   });
 
   return (
@@ -21,6 +32,7 @@ function Memories(props) {
       <CreateArea className="createnote"
                   userId={props.uID}
                   userName={props.uName}
+                  uToken={props.uToken}
                   isImg={true} />
         {allMemories.map((memory, index) => {
           return (

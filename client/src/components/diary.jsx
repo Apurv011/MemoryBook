@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 import CreateArea from "./CreateArea";
 import SingleDay from "./SingleDay";
 import axios from "axios";
+import {useHistory} from "react-router-dom";
 
 function Diary(props){
+
+  let history = useHistory();
+
+  const config = {
+    headers: { "Authorization": "Bearer " + props.uToken }
+  };
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -14,17 +20,21 @@ function Diary(props){
   const [userDays, setUserDays] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/diary/alldays").then(res => {
+
+    axios.get("http://localhost:5000/diary/alldays", config).then(res => {
       setUserDays(() => {
         return res.data.days.filter((day) => {
           return day.user_id === props.uID;
         });
       });
+    }).catch((error) => {
+      console.log(error.response.status);
+      history.push("/login");
     });
   });
 
   function deleteDay(id) {
-    axios.delete("http://localhost:5000/diary/day/delete/"  + id).then(res => {
+    axios.delete("http://localhost:5000/diary/day/delete/"  + id, config).then(res => {
       console.log(res);
     });
 
@@ -36,7 +46,7 @@ function Diary(props){
 }
 
 function getData(id){
-  axios.get("http://localhost:5000/diary/" + id).then(res => {
+  axios.get("http://localhost:5000/diary/" + id, config).then(res => {
         setTitle(res.data.title);
         setContent(res.data.content);
         setDate(res.data.date);
@@ -49,6 +59,7 @@ function getData(id){
       <CreateArea className="createnote"
                   userId={props.uID}
                   userName={props.uName}
+                  uToken={props.uToken}
                   isImg={false} />
         <div className="row" style={{margin: "25px 50px"}}>
         {userDays.map((day, index) => {
@@ -80,7 +91,6 @@ function getData(id){
             </div>
           </div>
         </div>
-      <Footer />
     </div>
   );
 }

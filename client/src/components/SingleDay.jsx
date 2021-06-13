@@ -1,7 +1,6 @@
 import Slide from 'react-reveal/Slide';
 import React from "react";
 
-
 function SingleDay(props) {
 
   function getData(){
@@ -20,7 +19,7 @@ function SingleDay(props) {
           <h5 className="card-title">{props.title}</h5>
           <p className="card-text">{props.date}</p>
           <button type="button" onClick={getData} className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
-          Read More
+            Read More
           </button>
           <button style={{ margin: "16px" }} className="btn btn-outline-dark" onClick={deleteDay}>Delete</button>
         </div>

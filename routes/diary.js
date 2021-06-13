@@ -6,12 +6,12 @@ const checkAuth = require('../middleware/check-auth');
 
 const DiaryController = require('../controllers/diary');
 
-router.get('/alldays', DiaryController.getAllDays);
+router.get('/alldays', checkAuth ,DiaryController.getAllDays);
 
-router.get('/:dayId', DiaryController.getOneDay);
+router.get('/:dayId', checkAuth, DiaryController.getOneDay);
 
-router.post('/createday', DiaryController.createOneDay);
+router.post('/createday', checkAuth, DiaryController.createOneDay);
 
-router.delete('/day/delete/:dayId', DiaryController.deleteOneDay);
+router.delete('/day/delete/:dayId', checkAuth, DiaryController.deleteOneDay);
 
 module.exports = router;

@@ -29,7 +29,11 @@ function CreateArea(props) {
   let year = date_ob.getFullYear();
   date = date + "-" + month + "-" + year;
   return date;
-}
+  }
+
+  const config = {
+    headers: { "Authorization": "Bearer " + props.uToken }
+  };
 
   function sumbitMemory(event) {
 
@@ -42,7 +46,7 @@ function CreateArea(props) {
       formData.append("author_name", memories.author_name);
       formData.append("image", memories.image);
 
-      axios.post("http://localhost:5000/memory/creatememory", formData).then(response => {
+      axios.post("http://localhost:5000/memory/creatememory", formData, config).then(response => {
           console.log(response.data);
       });
 
@@ -60,7 +64,7 @@ function CreateArea(props) {
 
   function sumbitDay(event) {
 
-    axios.post("http://localhost:5000/diary/createday", days).then(response => {
+    axios.post("http://localhost:5000/diary/createday", days, config).then(response => {
         console.log(response.data);
     });
 

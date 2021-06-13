@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 import SingleMemory from "./SingleMemory";
 import axios from "axios";
 
@@ -8,19 +7,26 @@ function UserMemories(props){
 
   const [userMemories, setUserMemories] = useState([]);
 
+  const config = {
+    headers: { "Authorization": "Bearer " + props.uToken }
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:5000/memory/allmemories").then(res => {
+
+    axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
       setUserMemories(() => {
         return res.data.memories.filter((memory) => {
           return memory.user_id === props.uID;
         });
       });
+    }).catch((error) => {
+      console.log(error.response.status);
     });
   });
 
   function deleteMemory(id) {
 
-    axios.delete("http://localhost:5000/memory/memories/delete/"  + id).then(res => {
+    axios.delete("http://localhost:5000/memory/memories/delete/"  + id, config).then(res => {
       console.log(res);
     });
 
@@ -50,7 +56,6 @@ function UserMemories(props){
           );
           })}
         </div>
-      <Footer />
     </div>
   );
 }

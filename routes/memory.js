@@ -19,12 +19,12 @@ const upload = multer({
 
 const MemoriesController = require('../controllers/memory');
 
-router.get('/allmemories', MemoriesController.getAllMemories);
+router.get('/allmemories', checkAuth, MemoriesController.getAllMemories);
 
-router.get('/:memoryId', MemoriesController.getOneMemory);
+router.get('/:memoryId', checkAuth, MemoriesController.getOneMemory);
 
-router.post('/creatememory', upload.single('image'), MemoriesController.createOneMemory);
+router.post('/creatememory', upload.single('image'), checkAuth, MemoriesController.createOneMemory);
 
-router.delete('/memories/delete/:memoryId', MemoriesController.deleteOneMemory);
+router.delete('/memories/delete/:memoryId', checkAuth, MemoriesController.deleteOneMemory);
 
 module.exports = router;

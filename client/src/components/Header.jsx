@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 function Header(props) {
 
@@ -8,6 +8,22 @@ function Header(props) {
   function logout(){
     props.checkAuth();
     history.push('/LandingPage');
+  }
+
+  function myMemories(){
+    history.push('/myMemories');
+  }
+
+  function memories(){
+    history.push('/memories');
+  }
+
+  function myDiary(){
+    history.push('/myDiary');
+  }
+
+  function myProfile(){
+    history.push("/user/" + props.uID);
   }
 
   return (
@@ -19,13 +35,13 @@ function Header(props) {
     <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{marginLeft: "60px"}}>
       <ul className="navbar-nav  ml-auto">
         <li className="nav-item">
-          <Link className="nav-link " to={props.hOption==="My Memories" ? "/myMemories" : "/memories"}>{props.hOption}</Link>
+          <button className="nav-link btn btn-link" onClick={props.hOption==="My Memories" ? myMemories : memories}>{props.hOption}</button>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to={props.hOption2==="My Diary" ? "/myDiary" : "/memories"}>{props.hOption2}</Link>
+          <button className="nav-link btn btn-link" onClick={props.hOption2==="My Diary" ? myDiary : memories}>{props.hOption2}</button>
         </li>
         <li className="nav-item">
-          <Link className="nav-link " to={props.hOption3==="My Profile" ? "/user/" + props.uID : "/memories"}>{props.hOption3}</Link>
+          <button className="nav-link btn btn-link" onClick={props.hOption3==="My Profile" ? myProfile : memories}>{props.hOption3}</button>
         </li>
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={logout}>Logout</button>
