@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Fade from 'react-reveal/Fade';
-import Header from "./Header";
+import Header from "../Header/Header";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import styles from "./FullMemory.module.css";
+import {useHistory} from "react-router-dom";
 
 function FullMemory(props){
+
+  let history = useHistory();
 
   const [author, setAuthor] = useState("");
   const [authorId, setAuthorId] = useState("");
@@ -32,6 +36,7 @@ function FullMemory(props){
           setImage(res.data.image);
       }).catch((error) => {
         console.log(error.response.status);
+        history.push("/login");
       });
 
   });
@@ -40,18 +45,18 @@ function FullMemory(props){
     <div>
     <Header checkAuth={props.changeAuthStatus} uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
       <Fade left>
-        <div className="completeNote col-md-9 col-sm-12">
-          <img className="completeNoteImg col-md-9 col-sm-9" src={image==="" ? "https://images.wallpapersden.com/image/download/small-memory_am1pa2aUmZqaraWkpJRobWllrWdma2U.jpg"
+        <div className={`${styles.completeMemory} col-md-9 col-sm-12`}>
+          <img className={`${styles.completeMemoryImg} col-md-9 col-sm-9`} src={image==="" ? "https://images.wallpapersden.com/image/download/small-memory_am1pa2aUmZqaraWkpJRobWllrWdma2U.jpg"
                                                                            : "http://localhost:5000/" + image } alt="..." />
-          <div style={{paddingLeft: "140px", paddingRight: "100px"}}>
+          <div style={{paddingLeft: "120px", paddingRight: "100px"}}>
             <h1 style={{marginTop:"35px"}}> {title} </h1>
             <p>
-              <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}} to={"/user/"+ authorId}><em>Author: {author}</em></Link>
+              <Link className="nav-link nav-item" style={{textDecoration: "underline", marginBottom:"7px", color:"#000000"}} to={"/user/"+ authorId}><em>Author: {author}</em></Link>
             </p>
             <p>
               <small className="text-muted" style={{textAlign: "center"}}>{date}</small>
             </p>
-            <p className="c"> {content} </p>
+            <p> {content} </p>
           </div>
         </div>
       </Fade>

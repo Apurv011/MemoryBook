@@ -1,0 +1,21 @@
+.userCardImg{
+  margin-right: 10px;
+  border-radius: 7px;
+  object-fit: cover;
+  width: 340px;
+  height: 240px;;
+  border: 1px solid #ddd;
+}
+
+.userCard {
+    width: 700px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff
+}
+
+.bio{
+  white-space: pre-line;
+  margin-left: auto;
+  margin-right: auto;
+}

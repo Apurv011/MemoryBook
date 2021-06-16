@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import styles from "./CreateArea.module.css";
 
 function CreateArea(props) {
 
@@ -123,32 +124,32 @@ function CreateArea(props) {
 
   return (
     <div>
-      <form className="createArea col-md-7 col-sm-12">
-        {isExpanded &&
-          (
-            <input
+        <form className={`${styles.createArea} col-md-7 col-sm-12`}>
+          {isExpanded &&
+            (
+              <input
+              onChange={props.isImg ? handleMemoryChange : handleDayChange}
+              name="title"
+              placeholder="Title"
+              value={props.isImg ? memories.title : days.title} />
+            )
+          }
+          <textarea
+            name="content"
+            onClick={expand}
             onChange={props.isImg ? handleMemoryChange : handleDayChange}
-            name="title"
-            placeholder="Title"
-            value={props.isImg ? memories.title : days.title} />
-          )
-        }
-        <textarea
-          name="content"
-          onClick={expand}
-          onChange={props.isImg ? handleMemoryChange : handleDayChange}
-          value={props.isImg ? memories.content : days.content}
-          placeholder="Write here..."
-          rows={isExpanded===true ? 6 : 1}
-        />
-        {props.isImg && isExpanded &&
-          (
-            <input type="file" multiple name="image" onChange={upload} />
-          )
-        }
-        <button className="create-note-btn" onClick={props.isImg ? sumbitMemory : sumbitDay}>Add</button>
-      </form>
-    </div>
+            value={props.isImg ? memories.content : days.content}
+            placeholder="Write here..."
+            rows={isExpanded===true ? 6 : 1}
+          />
+          {props.isImg && isExpanded &&
+            (
+              <input type="file" multiple name="image" onChange={upload} />
+            )
+          }
+          <button className={`${styles.createNoteBtn}`} onClick={props.isImg ? sumbitMemory : sumbitDay}>Add</button>
+        </form>
+      </div>
   );
 }
 

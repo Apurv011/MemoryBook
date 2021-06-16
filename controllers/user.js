@@ -142,32 +142,33 @@ exports.getOneUser = (req, res, next) => {
 
 exports.editUser = (req, res, next) => {
     const userId = req.params.userId;
-    User
-        .update({ _id: userId }, { $set: req.body })
-        .exec()
-        .then(updatedUser => {
-            res.status(200).json({
-				message: 'Updated User Successfully!',
-				user: updatedUser
-			});
-        })
-        .catch(err => {
-            next(err);
-        });
-}
 
-exports.editUserWithPic = (req, res, next) => {
-    const userId = req.params.userId;
-    User
-        .update({ _id: userId }, {image: req.file.path} ,{ $set: req.body })
-        .exec()
-        .then(updatedUser => {
-            res.status(200).json({
-				message: 'Updated User Successfully!',
-				user: updatedUser
-			});
-        })
-        .catch(err => {
-            next(err);
-        });
+    if (typeof req.file === "undefined"){
+      User
+          .update({ _id: userId }, { $set: req.body })
+          .exec()
+          .then(updatedUser => {
+              res.status(200).json({
+  				message: 'Updated User Successfully!',
+  				user: updatedUser
+  			});
+          })
+          .catch(err => {
+              next(err);
+          });
+    }
+    else{
+      User
+          .update({ _id: userId }, {image: req.file.path} ,{ $set: req.body })
+          .exec()
+          .then(updatedUser => {
+              res.status(200).json({
+  				message: 'Updated User Successfully!',
+  				user: updatedUser
+  			});
+          })
+          .catch(err => {
+              next(err);
+          });
+    }
 }

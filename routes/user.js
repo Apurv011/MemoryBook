@@ -25,9 +25,7 @@ router.post('/login', UserController.logIn);
 
 router.get('/:userId', checkAuth, UserController.getOneUser);
 
-router.patch('/:userId', checkAuth, UserController.editUser);
-
-router.patch('/withProfilePic/:userId', upload.single('image'), checkAuth, UserController.editUserWithPic);
+router.patch('/:userId', checkAuth,  upload.single('image'), UserController.editUser);
 
 router.delete('/:userId', checkAuth, UserController.deleteUser);
 

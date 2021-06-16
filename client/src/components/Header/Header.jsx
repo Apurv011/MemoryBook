@@ -1,5 +1,6 @@
 import React from "react";
 import {useHistory} from "react-router-dom";
+import styles from "./Header.module.css";
 
 function Header(props) {
 
@@ -27,8 +28,8 @@ function Header(props) {
   }
 
   return (
-  <nav className="navbar navbar-light navbar-expand-lg header">
-    <h3 className="title">Memory-Book</h3>
+  <nav className={`${styles.header} navbar navbar-light navbar-expand-lg`}>
+    <h3 className={styles.title}>Memory-Book</h3>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header";
+import Header from "../Header/Header";
 import SingleMemory from "./SingleMemory";
-import CreateArea from "./CreateArea";
+import CreateArea from "../CreateArea/CreateArea";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import styles from "./Memories.module.css";
 
 function Memories(props) {
 
@@ -28,9 +29,8 @@ function Memories(props) {
   return (
     <div>
       <Header checkAuth={props.changeAuthStatus} uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
-      <h2 className="userName">Hello, {props.uName} </h2>
-      <CreateArea className="createnote"
-                  userId={props.uID}
+      <h2 className={styles.userName}>Hello, {props.uName} </h2>
+      <CreateArea userId={props.uID}
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={true} />

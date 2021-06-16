@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import SignUpForm from "./SignUpForm";
-import LogInForm from "./LogInForm";
-import Memories from "./Memories";
-import FullMemory from "./FullMemory";
-import UserMemories from "./UserMemories";
+import SignUpForm from "./LoginSignup/SignUpForm";
+import LogInForm from "./LoginSignup/LogInForm";
+import Memories from "./Memories/Memories";
+import FullMemory from "./Memories/FullMemory";
+import UserMemories from "./Memories/UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import LandingPage from "./LandingPage";
-import User from "./User";
-import Diary from "./diary";
+import LandingPage from "./MainPage/LandingPage";
+import User from "./UserProfile/User";
+import Diary from "./Diary/Diary";
 
 function App() {
 

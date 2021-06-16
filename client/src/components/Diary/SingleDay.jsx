@@ -1,5 +1,6 @@
 import Slide from 'react-reveal/Slide';
 import React from "react";
+import styles from "./SingleDay.module.css";
 
 function SingleDay(props) {
 
@@ -14,10 +15,10 @@ function SingleDay(props) {
   return (
     <div>
       <Slide left>
-      <div className="card singleDayCard" style={{ width: "18rem", borderRadius: "7px", margin: "16px" }}>
+      <div className={styles.singleDayCard} style={{ width: "18rem", borderRadius: "7px", margin: "16px" }}>
         <div className="card-body">
-          <h5 className="card-title">{props.title}</h5>
-          <p className="card-text">{props.date}</p>
+          <h5>{props.title}</h5>
+          <p>{props.date}</p>
           <button type="button" onClick={getData} className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
             Read More
           </button>

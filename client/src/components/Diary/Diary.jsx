@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header";
-import CreateArea from "./CreateArea";
+import Header from "../Header/Header";
+import CreateArea from "../CreateArea/CreateArea";
 import SingleDay from "./SingleDay";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
@@ -56,8 +56,7 @@ function getData(id){
   return (
     <div>
       <Header checkAuth={props.changeAuthStatus} hOption2="Home"/>
-      <CreateArea className="createnote"
-                  userId={props.uID}
+      <CreateArea userId={props.uID}
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={false} />
