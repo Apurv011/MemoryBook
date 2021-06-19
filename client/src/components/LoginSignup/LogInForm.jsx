@@ -17,8 +17,9 @@ function LogInForm(props){
     axios.post("http://localhost:5000/user/login", user).then(response => {
       if(response.data.message === 'Auth Successful!'){
           console.log(response.data);
+          localStorage.clear();
+          localStorage.setItem('userData', JSON.stringify(response.data));
           props.getUser(response.data.user._id, response.data.user.username, response.data.token);
-          props.changeAuthStatus();
           history.push('/memories');
       }
       else{
@@ -46,8 +47,6 @@ function LogInForm(props){
     });
   }
 
-
-
   return (
     <div>
       <h1 className={styles.heading}>Log In</h1>
@@ -64,7 +63,7 @@ function LogInForm(props){
         <button type="submit" onClick={loginUser} className="btn btn-outline-dark">Log In</button>
       </form>
       <Link to="/signup">
-        <p id="emailHelp" className="text-muted small-text" >
+        <p id="emailHelp" className="small-text" style={{color: "#161616"}} >
           Don't have an account? Click here to create!
         </p>
       </Link>

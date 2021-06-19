@@ -17,6 +17,7 @@ exports.getAllMemories = (req, res, next) => {
 						content: memory.content,
 						author_name: memory.author_name,
 						date: memory.date,
+						comments: memory.comments,
 						image: memory.image
           }
 				})
@@ -32,7 +33,7 @@ exports.getOneMemory = (req, res, next) => {
     const memoryId = req.params.memoryId;
     Memory
         .findById(memoryId)
-        .select('_id title content user_id author_name date image')
+        .select('_id title content user_id author_name date comments image')
         .exec()
         .then(memory => {
             return res.status(201).json(memory);
@@ -56,6 +57,7 @@ exports.createOneMemory = (req, res, next) => {
           title: memory.title,
           content: memory.content,
 					date: memory.date,
+					comments: memory.comments,
 					image: memory.image
 				}
 			});
@@ -81,6 +83,22 @@ exports.deleteOneMemory = (req, res, next) => {
 		});
 };
 
+exports.addComments = (req, res, next) => {
+	const memoryId = req.params.memoryId;
+
+	Memory
+		.update({ _id: memoryId }, { $set: { comments: req.body.comments } })
+		.exec()
+		.then(result => {
+			res.status(200).json({
+				message: 'Comment added Successfully!',
+				result: result
+			});
+		})
+		.catch(error => {
+			next(error);
+		})
+};
 
 function createMemory(req) {
 	var img;
@@ -97,6 +115,7 @@ function createMemory(req) {
 		content: req.body.content,
 		author_name: req.body.author_name,
 		date: req.body.date,
+		comments: req.body.comments,
 		image	: img
 	});
 }

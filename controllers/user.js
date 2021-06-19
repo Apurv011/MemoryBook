@@ -32,7 +32,6 @@ exports.signUp = (req, res, next) => {
                                 console.log(result);
                                 res.status(201).json({
                                     message: "User created",
-                                    status: 'Logged In',
                                 });
                             })
                             .catch(err => {
@@ -85,7 +84,6 @@ exports.logIn = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: 'Auth Successful!',
-                        status: 'Logged In',
                         token: token,
                         user: user[0],
                     });
@@ -130,7 +128,6 @@ exports.getOneUser = (req, res, next) => {
             }
             return res.status(200).json({
                 user: result,
-                status: "Logged In"
             });
         })
         .catch(err => {

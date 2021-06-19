@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SignUpForm from "./LoginSignup/SignUpForm";
 import LogInForm from "./LoginSignup/LogInForm";
 import Memories from "./Memories/Memories";
@@ -11,14 +11,19 @@ import Diary from "./Diary/Diary";
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState(false);
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
   const [userToken, setUserToken] = useState("");
 
-  function checkAuth(){
-    setIsAuth(!isAuth);
-  }
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("userData");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUserToken(foundUser.token);
+      setUserId(foundUser.user._id);
+      setUserName(foundUser.user.username);
+    }
+  }, []);
 
   function getCurrentUser(id, uName, uToken){
     setUserName(uName);
@@ -38,31 +43,31 @@ function App() {
       </Route>
 
       <Route path="/signup" exact>
-        <SignUpForm changeAuthStatus={checkAuth} />
+        <SignUpForm />
       </Route>
 
       <Route path="/login" exact>
-        <LogInForm changeAuthStatus={checkAuth} getUser={getCurrentUser}/>
+        <LogInForm getUser={getCurrentUser}/>
       </Route>
 
       <Route path="/memories" exact>
-        <Memories  uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+        <Memories  uID={userId} uName={userName} uToken={userToken}/>
       </Route>
 
       <Route path="/myMemories" exact>
-        <UserMemories exact component={UserMemories} uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+        <UserMemories exact component={UserMemories} uID={userId} uToken={userToken}/>
       </Route>
 
       <Route path="/myDiary" exact>
-        <Diary uID={userId} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+        <Diary uID={userId} uToken={userToken}/>
       </Route>
 
-      <Route path="/fullMemory/:pID" exact>
-        <FullMemory uID={userId} uName={userName} changeAuthStatus={checkAuth} isAuth={isAuth} uToken={userToken}/>
+      <Route path="/fullMemory" exact>
+        <FullMemory uID={userId} uName={userName} uToken={userToken}/>
       </Route>
 
-      <Route path="/user/:userID" exact>
-        <User uID={userId} uName={userName} uToken={userToken} changeAuthStatus={checkAuth} isAuth={isAuth}/>
+      <Route path="/user" exact>
+        <User uID={userId} uName={userName} uToken={userToken} />
       </Route>
 
     </Router>

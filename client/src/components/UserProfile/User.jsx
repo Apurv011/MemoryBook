@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Header from "../Header/Header";
 import SingleMemory from "../Memories/SingleMemory";
 import styles from "./User.module.css";
 import {useHistory} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-function User(props){
+function User(){
 
   let history = useHistory();
-
   const location = useLocation();
-  let pathName = location.pathname;
-  const uId = pathName.substr(6);
 
   const [userInfo, setUserInfo] = useState({
     username:"",
@@ -21,42 +18,59 @@ function User(props){
     image:""
   });
   const [userMemories, setUserMemories] = useState([]);
+  const [uId, setUId] = useState("");
+  const [isAuthor, setIsAuthor] = useState(false);
 
-  const config = {
-    headers: { "Authorization": "Bearer " + props.uToken }
-  };
+  const loggedInUser = localStorage.getItem("userData");
+
   useEffect(() => {
+    const loggedInUser = localStorage.getItem("userData");
 
-    const config = {
-      headers: { "Authorization": "Bearer " + props.uToken }
-    };
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
 
-    axios.get("http://localhost:5000/user/" + uId, config).then(res => {
-          console.log(res.data.user);
-          setUserInfo((preValues) => {
-            return {
-              ...preValues,
-              username: res.data.user.username,
-              bio: res.data.user.bio,
-              interests: res.data.user.interests,
-              image: res.data.user.image
-            };
-          })
-        })
-      });
+      const config = {
+        headers: { "Authorization": "Bearer " + foundUser.token }
+      };
 
-    axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
-      console.log(res.data);
-      setUserMemories(() => {
-        return res.data.memories.filter((memory) => {
-          return memory.user_id === uId;
+      if(location.state.authorId === foundUser.user._id){
+        setUId(foundUser.user._id);
+        setIsAuthor(false);
+      }
+      else{
+        setUId(location.state.authorId);
+        setIsAuthor(true);
+      }
+
+      axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
+        console.log(res.data);
+        setUserMemories(() => {
+          return res.data.memories.filter((memory) => {
+            return memory.user_id === uId;
+          });
         });
+      }).catch((error) => {
+        console.log(error.response.status);
+        history.push("/login");
       });
-    }).catch((error) => {
-      console.log(error.response.status);
-      history.push("/login");
 
-  }, [uId, props.uToken]);
+      axios.get("http://localhost:5000/user/" + uId, config).then(res => {
+        console.log(res.data.user);
+        setUserInfo((preValues) => {
+          return {
+            ...preValues,
+            username: res.data.user.username,
+            bio: res.data.user.bio,
+            interests: res.data.user.interests,
+            image: res.data.user.image
+          };
+        })
+      })
+    }
+    else{
+      history.push("/login");
+    }
+  }, [uId, history, location.state.authorId]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -70,6 +84,13 @@ function User(props){
   }
 
   function update(){
+
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+
+      const config = {
+        headers: { "Authorization": "Bearer " + foundUser.token }
+      };
 
       const formData = new FormData();
 
@@ -93,6 +114,7 @@ function User(props){
                 });
             });
       });
+    }
   }
 
   function upload(event){
@@ -118,7 +140,7 @@ function User(props){
   return (
 
     <div>
-      <Header checkAuth={props.changeAuthStatus} hOption="Home"/>
+      <Header hOption="Home"/>
       <div className="mt-5 d-flex justify-content-center">
         <div className={`${styles.userCard} p-3`}>
           <div className="d-flex">
@@ -132,9 +154,9 @@ function User(props){
               <p className={styles.bio}>{userInfo.bio}</p>
               <h6>Interests</h6>
               <p>{userInfo.interests}</p>
-              <button style={props.uID===uId ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
+              <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
                       className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-              <button style={props.uID===uId ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
+              <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
                       className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter2">Change Profile Picture</button>
             </div>
           </div>

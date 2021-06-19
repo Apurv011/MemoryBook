@@ -7,7 +7,7 @@ function Header(props) {
   let history = useHistory();
 
   function logout(){
-    props.checkAuth();
+    localStorage.clear();
     history.push('/LandingPage');
   }
 
@@ -24,7 +24,10 @@ function Header(props) {
   }
 
   function myProfile(){
-    history.push("/user/" + props.uID);
+    history.push({
+          pathname: '/user',
+          state: { authorId: props.uID }
+      });
   }
 
   return (
@@ -34,7 +37,7 @@ function Header(props) {
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{marginLeft: "60px"}}>
-      <ul className="navbar-nav  ml-auto">
+      <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={props.hOption==="My Memories" ? myMemories : memories}>{props.hOption}</button>
         </li>

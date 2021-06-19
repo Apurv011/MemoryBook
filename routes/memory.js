@@ -25,6 +25,8 @@ router.get('/:memoryId', checkAuth, MemoriesController.getOneMemory);
 
 router.post('/creatememory', upload.single('image'), checkAuth, MemoriesController.createOneMemory);
 
+router.patch('/:memoryId', checkAuth, MemoriesController.addComments);
+
 router.delete('/memories/delete/:memoryId', checkAuth, MemoriesController.deleteOneMemory);
 
 module.exports = router;

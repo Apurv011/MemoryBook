@@ -14,21 +14,29 @@ function Memories(props) {
 
   useEffect(() => {
 
-    const config = {
-      headers: { "Authorization": "Bearer " + props.uToken }
-    };
+    const loggedInUser = localStorage.getItem("userData");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
 
-    axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
-      setAllMemories(res.data.memories)
-    }).catch((error) => {
-      console.log(error.response.status);
+      const config = {
+        headers: { "Authorization": "Bearer " + foundUser.token }
+      };
+
+      axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
+        setAllMemories(res.data.memories)
+      }).catch((error) => {
+        console.log(error.response.status);
+        history.push("/login");
+      });
+    }
+    else{
       history.push("/login");
-    });
+    }
   });
 
   return (
     <div>
-      <Header checkAuth={props.changeAuthStatus} uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
+      <Header uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
       <h2 className={styles.userName}>Hello, {props.uName} </h2>
       <CreateArea userId={props.uID}
                   userName={props.uName}

@@ -1,7 +1,6 @@
 import React from "react";
 import Slide from 'react-reveal/Slide';
 import styles from "./SingleMemory.module.css";
-
 import {Link, useHistory } from 'react-router-dom';
 
 function SingleMemory(props) {
@@ -14,7 +13,10 @@ function SingleMemory(props) {
   }
 
   function getCompleteMemory(){
-      history.push('/fullMemory/' + props.id);
+    history.push({
+          pathname: '/fullMemory',
+          state: { memoryId: props.id }
+      });
   }
 
   return (

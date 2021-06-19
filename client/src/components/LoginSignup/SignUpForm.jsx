@@ -45,8 +45,6 @@ function SignUpForm(props){
       if(valideate()){
 
         axios.post("http://localhost:5000/user/signup", user).then(response => {
-          console.log(response.data);
-          props.changeAuthStatus();
           history.push('/login');
         });
         setUser({
@@ -100,7 +98,7 @@ function SignUpForm(props){
         <button type="submit" onClick={registerUser} className="btn btn-outline-dark">Sign-Up</button>
       </form>
       <Link to="/login">
-        <h1 id="emailHelp" className="text-muted small-text">
+        <h1 id="emailHelp" className="small-text" style={{color: "#161616"}}>
           Already have an Accout? Click here to Log-In
         </h1>
       </Link>

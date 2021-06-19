@@ -1,12 +1,12 @@
 .completeMemory{
   background-color: #ffffff;
   padding: 40px 5px;
-  border-radius: 155px;
+  border-radius: 30px;
   margin: 30px auto;
   max-width: 1100px;
 }
 .completeMemoryImg{
-  border-radius: 7%;
+  border-radius: 30px;
   object-fit: cover;
   display: block;
   margin-left: auto;

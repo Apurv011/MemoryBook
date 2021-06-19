@@ -7,6 +7,7 @@ const memorySchema = mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   date: { type: String },
+  comments: {type: Array, default:[]},
   image: { type: String, default:"" }
 });
 
