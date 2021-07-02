@@ -12,7 +12,8 @@ const userSchema = mongoose.Schema({
     username: {type: String, required: true},
     bio: {type: String, default:""},
     interests: {type: String, default:""},
-    image: { type: String, default:"" }
+    image: { type: String, default:"" },
+    favs: {type: Array, default:[]},
 });
 
 module.exports = mongoose.model('User', userSchema);

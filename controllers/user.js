@@ -24,7 +24,8 @@ exports.signUp = (req, res, next) => {
                             password: hash,
                             username: req.body.username,
                             bio: req.body.bio,
-                            interests: req.body.interests
+                            interests: req.body.interests,
+                            favs: req.body.favs
                         });
                         user
                             .save()
@@ -118,7 +119,7 @@ exports.getOneUser = (req, res, next) => {
     const userId = req.params.userId;
     User
         .findById(userId)
-        .select('_id username mail bio interests image')
+        .select('_id username mail bio interests image favs')
         .exec()
         .then(result => {
             if(!result){

@@ -48,6 +48,7 @@ function FullMemory(){
       axios.get("http://localhost:5000/memory/" + location.state.memoryId, config).then(res => {
           console.log(res.data);
           setAuthor(res.data.author_name);
+          console.log(author);
           setAuthorId(res.data.user_id);
           setTitle(res.data.title);
           setContent(res.data.content);
@@ -67,7 +68,7 @@ function FullMemory(){
     else{
       history.push("/login");
     }
-  }, [uID, history, location]);
+  }, [uID, history, location, author]);
 
   function getDate(){
     let date_ob = new Date();
@@ -165,7 +166,6 @@ function FullMemory(){
             <p className="text-muted">{date}</p>
             <button className="btn" onClick={goToUser}><strong>Author: {author}</strong></button>
             <br/>
-
             <p> {content} </p>
           </div>
           <div className="p-2 px-4 col-md-10 col-sm-9" style={{margin:"0px auto"}}>
@@ -181,12 +181,12 @@ function FullMemory(){
               </button>
             </div>
             <div className="collapsable-comment">
-              <p onClick={changeIcon} className="d-flex flex-row justify-content-between align-items-center action-collapse mb-2" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1">
+              <button onClick={changeIcon} className="btn" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1">
                 <p>
                 <span style={{color:"#000000"}}>{!isCollapsed ? "All Comments" : "Hide Comments"}</span>
                 {!isCollapsed ? <ArrowDropDownRoundedIcon fontSize="large" style={{color:"#000000"}}/> : <ArrowDropUpRoundedIcon fontSize="large" style={{color:"#000000"}}/>}
                 </p>
-              </p>
+              </button>
               <div id="collapse-1" className="collapse">
               {allComments.comments.length!==0 ?  allComments.comments.map((cmt, index) => {
                 return (
