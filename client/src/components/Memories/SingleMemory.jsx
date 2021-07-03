@@ -46,7 +46,7 @@ function SingleMemory(props) {
     else{
       history.push("/login");
     }
-  }, [history, list, props.id]);
+  }, [list, history, props.id]);
 
   function deleteMemory() {
     props.onDelete(props.id);
@@ -142,13 +142,13 @@ function SingleMemory(props) {
             <h5 style={{margin: "7px"}}>{props.title}</h5>
             <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}} to={"/user/"+ props.uID}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</Link>
             <button className="btn btn-outline-dark" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>
-            {props.btnTitle!=="Delete" &&
+            {props.btnTitle!=="Deletetrue" && !props.isFav &&
               (isFav ?
                 <FavoriteIcon fontSize="large" className={`${styles.likeBtn}`} onClick={changeLike} /> :
                 <FavoriteBorderIcon fontSize="large" className={`${styles.likeBtn}`} onClick={changeLike} />
               )
             }
-            <button style={props.btnTitle==="Delete" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-outline-dark" onClick={deleteMemory}>{props.btnTitle}</button>
+            <button style={props.btnTitle==="Deletetrue" ? { visibility: "visible", margin: "16px"} : { visibility: "hidden" }} className="btn btn-outline-dark" onClick={deleteMemory}>Delete</button>
         </div>
         </Slide>
       </div>

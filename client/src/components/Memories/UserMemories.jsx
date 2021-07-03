@@ -3,10 +3,12 @@ import Header from "../Header/Header";
 import SingleMemory from "./SingleMemory";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function UserMemories(props){
 
   let history = useHistory();
+  const location = useLocation();
 
   const [userMemories, setUserMemories] = useState([]);
 
@@ -18,13 +20,21 @@ function UserMemories(props){
       const config = {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
-
       axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
-        setUserMemories(() => {
-          return res.data.memories.filter((memory) => {
-            return memory.user_id === props.uID;
+        if(!location.state.isFav){
+          setUserMemories(() => {
+            return res.data.memories.filter((memory) => {
+              return memory.user_id === props.uID;
+            });
           });
-        });
+        }
+        else{
+          setUserMemories(() => {
+            return res.data.memories.filter((memory) => {
+              return location.state.favs.includes(memory._id);
+            });
+          });
+        }
       }).catch((error) => {
         console.log(error.response.status);
         history.push("/login");
@@ -33,7 +43,8 @@ function UserMemories(props){
   else{
     history.push("/login");
   }
-});
+
+},[history, props.uID]);
 
   function deleteMemory(id) {
     const loggedInUser = localStorage.getItem("userData");
@@ -67,7 +78,8 @@ function UserMemories(props){
               id={memory._id}
               onDelete={deleteMemory}
               title={memory.title}
-              btnTitle={"Delete"}
+              isFav={true}
+              btnTitle={"Delete" + String(location.state.favs.length<=0)}
               content={memory.content}
               date={memory.date}
               image={memory.image}

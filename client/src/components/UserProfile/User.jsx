@@ -15,7 +15,8 @@ function User(){
     username:"",
     bio: "",
     interests: "",
-    image:""
+    image:"",
+    favs:[]
   });
   const [userMemories, setUserMemories] = useState([]);
   const [uId, setUId] = useState("");
@@ -62,6 +63,7 @@ function User(){
             username: res.data.user.username,
             bio: res.data.user.bio,
             interests: res.data.user.interests,
+            favs: res.data.user.favs,
             image: res.data.user.image
           };
         })
@@ -137,6 +139,14 @@ function User(){
     });
   }
 
+  function showFavs(){
+    console.log(userInfo.favs);
+      history.push({
+            pathname: '/myMemories',
+            state: { favs:  userInfo.favs, isFav: true}
+        });
+  }
+
   return (
 
     <div>
@@ -154,6 +164,10 @@ function User(){
               <p className={styles.bio}>{userInfo.bio}</p>
               <h6>Interests</h6>
               <p>{userInfo.interests}</p>
+              <button onClick={showFavs} style={!isAuthor ? { visibility: "visible"} : { visibility: "hidden" }} className="btn btn-outline-dark">
+                  Favorites
+              </button>
+              <br />
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
                       className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}

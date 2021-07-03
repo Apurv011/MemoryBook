@@ -12,7 +12,10 @@ function Header(props) {
   }
 
   function myMemories(){
-    history.push('/myMemories');
+    history.push({
+          pathname: '/myMemories',
+          state: { favs: [], isFav: false }
+      });
   }
 
   function memories(){
