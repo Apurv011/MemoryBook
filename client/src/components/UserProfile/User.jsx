@@ -43,7 +43,7 @@ function User(){
         setIsAuthor(true);
       }
 
-      axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories/`, config).then(res => {
         console.log(res.data);
         setUserMemories(() => {
           return res.data.memories.filter((memory) => {
@@ -55,7 +55,7 @@ function User(){
         history.push("/login");
       });
 
-      axios.get("http://localhost:5000/user/" + uId, config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
         console.log(res.data.user);
         setUserInfo((preValues) => {
           return {
@@ -102,9 +102,9 @@ function User(){
       formData.append("interests", userInfo.interests);
       formData.append("image", userInfo.image);
 
-      axios.patch("http://localhost:5000/user/" + uId, formData, config).then(response => {
+      axios.patch(`${process.env.REACT_APP_SERVER}user/${uId}`, formData, config).then(response => {
           console.log(response.data);
-          axios.get("http://localhost:5000/user/" + uId, config).then(res => {
+          axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
                 console.log(res.data.user);
                 setUserInfo((preValues) => {
                   return {
@@ -139,24 +139,16 @@ function User(){
     });
   }
 
-  function showFavs(){
-    console.log(userInfo.favs);
-      history.push({
-            pathname: '/myMemories',
-            state: { favs:  userInfo.favs, isFav: true}
-        });
-  }
-
   return (
 
     <div>
-      <Header hOption="Home"/>
+      <Header hOption3="Home" hOptionFav="Favorites" favorites={userInfo.favs} isAuthor={isAuthor}/>
       <div className="mt-5 d-flex justify-content-center">
         <div className={`${styles.userCard} p-3`}>
           <div className="d-flex">
             <div>
               <img src={userInfo.image==="" ? "https://www.watershed.co.uk/engage/wp-content/uploads/2010/08/blank-profile.jpg"
-                                            : "http://localhost:5000/" + userInfo.image}
+                                            : process.env.REACT_APP_SERVER + userInfo.image}
                                             alt="..." className={styles.userCardImg} />
             </div>
             <div style={{marginTop:"15px"}} className="ml-3">
@@ -164,10 +156,6 @@ function User(){
               <p className={styles.bio}>{userInfo.bio}</p>
               <h6>Interests</h6>
               <p>{userInfo.interests}</p>
-              <button onClick={showFavs} style={!isAuthor ? { visibility: "visible"} : { visibility: "hidden" }} className="btn btn-outline-dark">
-                  Favorites
-              </button>
-              <br />
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
                       className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
@@ -218,7 +206,7 @@ function User(){
         </div>
       </div>
       <div style={{marginTop:"50px"}}>
-      {userMemories.map((memory, index) => {
+      {userMemories.slice(0).reverse().map((memory, index) => {
         return (
           <SingleMemory
           key={index}

@@ -33,6 +33,13 @@ function Header(props) {
       });
   }
 
+  function showFavs(){
+      history.push({
+            pathname: '/myMemories',
+            state: { favs:  props.favorites, isFav: true}
+        });
+  }
+
   return (
   <nav className={`${styles.header} navbar navbar-light navbar-expand-lg`}>
     <h3 className={styles.title}>Memory-Book</h3>
@@ -49,6 +56,9 @@ function Header(props) {
         </li>
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={props.hOption3==="My Profile" ? myProfile : memories}>{props.hOption3}</button>
+        </li>
+        <li className="nav-item">
+          <button style={!props.isAuthor ? {visibility: "visible"} : {visibility: "hidden"} } className="nav-link btn btn-link" onClick={props.hOptionFav==="Favorites" ? showFavs : memories}>{props.hOptionFav}</button>
         </li>
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={logout}>Logout</button>

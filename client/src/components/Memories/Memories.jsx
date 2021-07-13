@@ -22,10 +22,9 @@ function Memories(props) {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories`, config).then(res => {
         setAllMemories(res.data.memories)
       }).catch((error) => {
-        console.log(error.response.status);
         history.push("/login");
       });
     }
@@ -42,7 +41,7 @@ function Memories(props) {
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={true} />
-        {allMemories.map((memory, index) => {
+        {allMemories.slice(0).reverse().map((memory, index) => {
           return (
             <SingleMemory
               key={index}

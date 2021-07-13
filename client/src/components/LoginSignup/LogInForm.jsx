@@ -14,7 +14,7 @@ function LogInForm(props){
   });
 
   function loginUser(event) {
-    axios.post("http://localhost:5000/user/login", user).then(response => {
+    axios.post(`${process.env.REACT_APP_SERVER}user/login`, user).then(response => {
       if(response.data.message === 'Auth Successful!'){
           console.log(response.data);
           localStorage.clear();

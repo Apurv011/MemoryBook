@@ -45,7 +45,7 @@ function FullMemory(){
       setUID(foundUser.user._id);
       setUName(foundUser.user.username);
 
-      axios.get("http://localhost:5000/memory/" + location.state.memoryId, config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}memory/${location.state.memoryId}`, config).then(res => {
           console.log(res.data);
           setAuthor(res.data.author_name);
           console.log(author);
@@ -106,9 +106,9 @@ function FullMemory(){
         };
       });
 
-      axios.patch("http://localhost:5000/memory/" + location.state.memoryId, allComments, config).then(response => {
+      axios.patch(`${process.env.REACT_APP_SERVER}memory/${location.state.memoryId}`, allComments, config).then(response => {
           console.log(response.data);
-          axios.get("http://localhost:5000/memory/" + location.state.memoryId, config).then(res => {
+          axios.get(`${process.env.REACT_APP_SERVER}memory/${location.state.memoryId}`, config).then(res => {
               console.log(res.data);
               setAuthor(res.data.author_name);
               setAuthorId(res.data.user_id);
@@ -156,11 +156,11 @@ function FullMemory(){
 
   return (
     <div>
-      <Header uID={uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
+      <Header hOption3="Home"/>
         <Fade left>
           <div className={`${styles.completeMemory} col-md-9 col-sm-12`}>
           <img className={`${styles.completeMemoryImg} col-md-9 col-sm-9`} src={image==="" ? "https://images.wallpapersden.com/image/download/small-memory_am1pa2aUmZqaraWkpJRobWllrWdma2U.jpg"
-                                                                           : "http://localhost:5000/" + image } alt="..." />
+                                                                           : process.env.REACT_APP_SERVER + image } alt="..." />
           <div style={{paddingLeft: "120px", paddingRight: "100px"}}>
             <h1 style={{marginTop:"35px"}}> {title} </h1>
             <p className="text-muted">{date}</p>
@@ -188,7 +188,7 @@ function FullMemory(){
                 </p>
               </button>
               <div id="collapse-1" className="collapse">
-              {allComments.comments.length!==0 ?  allComments.comments.map((cmt, index) => {
+              {allComments.comments.length!==0 ?  allComments.comments.slice(0).reverse().map((cmt, index) => {
                 return (
                   <Comment
                       comment={cmt.comment}

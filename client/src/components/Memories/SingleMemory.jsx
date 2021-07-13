@@ -27,7 +27,7 @@ function SingleMemory(props) {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get("http://localhost:5000/user/" + foundUser.user._id, config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
         setList(res.data.user.favs!==null ? res.data.user.favs : []);
         if(list.includes(props.id)){
           setIsFav(true);
@@ -75,9 +75,9 @@ function SingleMemory(props) {
           };
         });
 
-        axios.patch("http://localhost:5000/user/" + foundUser.user._id, allFavs, config).then(response => {
+        axios.patch(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, allFavs, config).then(response => {
             console.log(response.data);
-            axios.get("http://localhost:5000/user/" + foundUser.user._id, config).then(res => {
+            axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
                 setList(res.data.user.favs!==null ? res.data.user.favs : []);
                 setAllFavs((preValues) => {
                   return {
@@ -108,9 +108,9 @@ function SingleMemory(props) {
           };
         });
 
-        axios.patch("http://localhost:5000/user/" + foundUser.user._id, allFavs, config).then(response => {
+        axios.patch(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, allFavs, config).then(response => {
             console.log(response.data);
-            axios.get("http://localhost:5000/user/" + foundUser.user._id, config).then(res => {
+            axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
                 setList(res.data.user.favs!==null ? res.data.user.favs : []);
                 setAllFavs((preValues) => {
                   return {
@@ -138,9 +138,12 @@ function SingleMemory(props) {
       <div>
         <Slide left>
         <div className={styles.singleCard}>
-            <img src={"http://localhost:5000/" + props.image} className={styles.cardImg} alt="..."/>
+            <img src={process.env.REACT_APP_SERVER + props.image} className={styles.cardImg} alt="..."/>
             <h5 style={{margin: "7px"}}>{props.title}</h5>
-            <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}} to={"/user/"+ props.uID}>{props.btnTitle==="Delete" ? "" : "Author: " + author }</Link>
+            <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}}
+              to={{pathname: '/user', state: { authorId: props.uID }}}>
+                {props.btnTitle==="Delete" ? "" : "Author: " + author }
+            </Link>
             <button className="btn btn-outline-dark" style={{marginLeft: "5px"}} onClick={getCompleteMemory}>Read More</button>
             {props.btnTitle!=="Deletetrue" && !props.isFav &&
               (isFav ?

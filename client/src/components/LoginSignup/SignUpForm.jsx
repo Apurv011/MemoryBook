@@ -44,7 +44,7 @@ function SignUpForm(props){
     function registerUser(event) {
       if(valideate()){
 
-        axios.post("http://localhost:5000/user/signup", user).then(response => {
+        axios.post(`${process.env.REACT_APP_SERVER}user/signup`, user).then(response => {
           history.push('/login');
         });
         setUser({

@@ -47,7 +47,7 @@ function CreateArea(props) {
       formData.append("author_name", memories.author_name);
       formData.append("image", memories.image);
 
-      axios.post("http://localhost:5000/memory/creatememory", formData, config).then(response => {
+      axios.post(`${process.env.REACT_APP_SERVER}memory/creatememory`, formData, config).then(response => {
           console.log(response.data);
       });
 
@@ -65,7 +65,7 @@ function CreateArea(props) {
 
   function sumbitDay(event) {
 
-    axios.post("http://localhost:5000/diary/createday", days, config).then(response => {
+    axios.post(`${process.env.REACT_APP_SERVER}diary/createday`, days, config).then(response => {
         console.log(response.data);
     });
 

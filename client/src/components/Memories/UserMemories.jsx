@@ -14,13 +14,14 @@ function UserMemories(props){
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("userData");
+
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
 
       const config = {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
-      axios.get("http://localhost:5000/memory/allmemories", config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories/`, config).then(res => {
         if(!location.state.isFav){
           setUserMemories(() => {
             return res.data.memories.filter((memory) => {
@@ -44,7 +45,7 @@ function UserMemories(props){
     history.push("/login");
   }
 
-},[history, props.uID]);
+}, [history, props.uID, userMemories, location.state.isFav, location.state.favs]);
 
   function deleteMemory(id) {
     const loggedInUser = localStorage.getItem("userData");
@@ -55,7 +56,7 @@ function UserMemories(props){
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-    axios.delete("http://localhost:5000/memory/memories/delete/"  + id, config).then(res => {
+    axios.delete(`${process.env.REACT_APP_SERVER}memory/memories/delete/${id}`, config).then(res => {
       console.log(res);
     });
 
@@ -71,7 +72,7 @@ function UserMemories(props){
     <div>
       <Header hOption="Home"/>
         <div className="row" style={{margin: "25px 50px"}}>
-        {userMemories.map((memory, index) => {
+        {userMemories.slice(0).reverse().map((memory, index) => {
           return (
             <SingleMemory
               key={index}
@@ -82,6 +83,7 @@ function UserMemories(props){
               btnTitle={"Delete" + String(location.state.favs.length<=0)}
               content={memory.content}
               date={memory.date}
+              author={memory.author_name}
               image={memory.image}
             />
           );

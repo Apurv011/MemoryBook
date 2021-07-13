@@ -26,7 +26,7 @@ function Diary(props){
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get("http://localhost:5000/diary/alldays", config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}diary/alldays`, config).then(res => {
         setUserDays(() => {
           return res.data.days.filter((day) => {
             return day.user_id === props.uID;
@@ -52,7 +52,7 @@ function Diary(props){
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.delete("http://localhost:5000/diary/day/delete/"  + id, config).then(res => {
+      axios.delete(`${process.env.REACT_APP_SERVER}diary/day/delete/${id}`, config).then(res => {
         console.log(res);
       });
 
@@ -74,7 +74,7 @@ function getData(id){
       headers: { "Authorization": "Bearer " + foundUser.token }
     };
 
-    axios.get("http://localhost:5000/diary/" + id, config).then(res => {
+    axios.get(`${process.env.REACT_APP_SERVER}diary/${id}`, config).then(res => {
           setTitle(res.data.title);
           setContent(res.data.content);
           setDate(res.data.date);
@@ -84,13 +84,13 @@ function getData(id){
 
   return (
     <div>
-      <Header hOption2="Home"/>
+      <Header hOption3="Home"/>
       <CreateArea userId={props.uID}
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={false} />
         <div className="row" style={{margin: "25px 50px"}}>
-        {userDays.map((day, index) => {
+        {userDays.slice(0).reverse().map((day, index) => {
           return (
             <SingleDay
               key={index}
