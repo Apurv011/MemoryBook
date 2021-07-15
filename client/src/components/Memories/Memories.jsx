@@ -9,7 +9,6 @@ import styles from "./Memories.module.css";
 function Memories(props) {
 
   let history = useHistory();
-  console.log("aaa");
   const [allMemories, setAllMemories] = useState([]);
 
   useEffect(() => {
@@ -21,7 +20,7 @@ function Memories(props) {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get('http://localhost:5000/memory/allmemories', config).then(res => {
+      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories`, config).then(res => {
         console.log(res.data.memories);
         setAllMemories(res.data.memories)
       }).catch((error) => {
