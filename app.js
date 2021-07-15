@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require("dotenv").config();
-
+const path = require('path');
 const userRoutes = require('./routes/user');
 const memoriesRoute = require('./routes/memory');
 const diaryRoute = require('./routes/diary');
@@ -34,6 +34,14 @@ app.use((req, res, next) => {
 app.use('/user', userRoutes);
 app.use('/memory', memoriesRoute);
 app.use('/diary', diaryRoute);
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static(path.join(__dirname, '/client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  })
+}
 
 // Handle Error Requests
 app.use((req, res, next) => {

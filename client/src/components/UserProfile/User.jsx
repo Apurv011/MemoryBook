@@ -54,9 +54,11 @@ function User(){
         console.log(error.response.status);
         history.push("/login");
       });
-
+      
       axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
-        console.log(res.data.user);
+        console.log(res.data.user.bio);
+        console.log(res.data.user.username);
+
         setUserInfo((preValues) => {
           return {
             ...preValues,

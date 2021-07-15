@@ -9,11 +9,10 @@ import styles from "./Memories.module.css";
 function Memories(props) {
 
   let history = useHistory();
-
+  console.log("aaa");
   const [allMemories, setAllMemories] = useState([]);
 
   useEffect(() => {
-
     const loggedInUser = localStorage.getItem("userData");
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
@@ -22,7 +21,8 @@ function Memories(props) {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories`, config).then(res => {
+      axios.get('http://localhost:5000/memory/allmemories', config).then(res => {
+        console.log(res.data.memories);
         setAllMemories(res.data.memories)
       }).catch((error) => {
         history.push("/login");
