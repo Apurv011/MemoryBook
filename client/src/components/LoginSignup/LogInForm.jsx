@@ -14,6 +14,7 @@ function LogInForm(props){
   });
 
   function loginUser(event) {
+    console.log(`${REACT_APP_SERVER}`);
     axios.post(`${process.env.SERVER_URL}user/login`, user).then(response => {
       if(response.data.message === 'Auth Successful!'){
           console.log(response.data);
