@@ -9,13 +9,12 @@ function LogInForm(props){
 
   const [user, setUser] = useState({
       email: "",
-      password:"",
-      token:""
+      password:""
   });
 
   function loginUser(event) {
-    console.log(`${process.env.REACT_APP_SERVER}`);
-    axios.post(`${process.env.SERVER_URL}user/login`, user).then(response => {
+    console.log(`${process.env.REACT_APP_SERVER}user/login`);
+    axios.post(`${process.env.REACT_APP_SERVER}user/login`, user).then(response => {
       if(response.data.message === 'Auth Successful!'){
           console.log(response.data);
           localStorage.clear();
@@ -30,8 +29,7 @@ function LogInForm(props){
 
     setUser({
       email: "",
-      password:"",
-      token:""
+      password:""
     });
 
     event.preventDefault();
