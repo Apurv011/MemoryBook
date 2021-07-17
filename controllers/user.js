@@ -25,7 +25,9 @@ exports.signUp = (req, res, next) => {
                             username: req.body.username,
                             bio: req.body.bio,
                             interests: req.body.interests,
-                            favs: req.body.favs
+                            favs: req.body.favs,
+                            followers: req.body.followers,
+                            following: req.body.following
                         });
                         user
                             .save()
@@ -119,7 +121,7 @@ exports.getOneUser = (req, res, next) => {
     const userId = req.params.userId;
     User
         .findById(userId)
-        .select('_id username mail bio interests image favs')
+        .select('_id username mail bio interests image favs followers following')
         .exec()
         .then(result => {
             if(!result){

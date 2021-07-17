@@ -14,6 +14,8 @@ const userSchema = mongoose.Schema({
     interests: {type: String, default:""},
     image: { type: String, default:"" },
     favs: {type: Array, default:[]},
+    followers: {type: Array, default:[]},
+    following: {type: Array, default:[]},
 });
 
 module.exports = mongoose.model('User', userSchema);
