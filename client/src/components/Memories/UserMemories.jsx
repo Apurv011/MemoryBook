@@ -4,6 +4,13 @@ import SingleMemory from "./SingleMemory";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
+import { css } from "@emotion/react";
+
+const override = css`
+display: block;
+margin: auto;
+`;
 
 function UserMemories(props){
 
@@ -11,6 +18,7 @@ function UserMemories(props){
   const location = useLocation();
 
   const [userMemories, setUserMemories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("userData");
@@ -28,6 +36,7 @@ function UserMemories(props){
               return memory.user_id === props.uID;
             });
           });
+          setLoading(false);
         }
         else{
           setUserMemories(() => {
@@ -35,6 +44,7 @@ function UserMemories(props){
               return location.state.favs.includes(memory._id);
             });
           });
+          setLoading(false);
         }
       }).catch((error) => {
         console.log(error.response.status);
@@ -70,7 +80,8 @@ function UserMemories(props){
 
   return (
     <div>
-      <Header hOption="Home"/>
+      <Header header1="Explore" hOption="Home"/>
+      <MoonLoader speedMultiplier={0.5} css={override} loading={loading} />
         <div className="row" style={{margin: "25px 50px"}}>
         {userMemories.slice(0).reverse().map((memory, index) => {
           return (

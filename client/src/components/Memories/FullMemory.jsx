@@ -156,7 +156,7 @@ function FullMemory(){
 
   return (
     <div>
-      <Header hOption3="Home"/>
+      <Header header1="Explore" hOption3="Home"/>
         <Fade left>
           <div className={`${styles.completeMemory} col-md-9 col-sm-12`}>
           <img className={`${styles.completeMemoryImg} col-md-9 col-sm-9`} src={image==="" ? "https://images.wallpapersden.com/image/download/small-memory_am1pa2aUmZqaraWkpJRobWllrWdma2U.jpg"

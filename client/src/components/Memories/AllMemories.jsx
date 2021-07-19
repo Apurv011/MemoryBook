@@ -13,11 +13,10 @@ display: block;
 margin: auto;
 `;
 
-function Memories(props) {
+function AllMemories(props) {
 
   let history = useHistory();
   const [allMemories, setAllMemories] = useState([]);
-  const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,19 +28,8 @@ function Memories(props) {
         headers: { "Authorization": "Bearer " + foundUser.token }
       };
 
-      axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
-        setFollowing(res.data.user.following!==null ? res.data.user.following : []);
-      });
-
       axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories`, config).then(res => {
-        setAllMemories(() => {
-          return res.data.memories.filter((memory) => {
-              for(var i=0; i<following.length; i++){
-                if(following[i]._id === memory.user_id) return true;
-              }
-              return false;
-          });
-        });
+        setAllMemories(res.data.memories);
         setLoading(false);
       }).catch((error) => {
         history.push("/login");
@@ -54,14 +42,14 @@ function Memories(props) {
 
   return (
     <div>
-      <Header header1="Explore" uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
+      <Header uID={props.uID} hOption="My Memories" hOption2="My Diary" hOption3="My Profile"/>
       <h2 className={styles.userName}>Hello, {props.uName} </h2>
       <CreateArea userId={props.uID}
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={true} />
       <MoonLoader speedMultiplier={0.5} css={override} loading={loading} />
-        {allMemories.slice(0).reverse().map((memory, index) => {
+      {allMemories.slice(0).reverse().map((memory, index) => {
           return (
             <SingleMemory
               key={index}
@@ -80,4 +68,4 @@ function Memories(props) {
   );
 }
 
-export default Memories;
+export default AllMemories;

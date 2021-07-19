@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import SignUpForm from "./LoginSignup/SignUpForm";
 import LogInForm from "./LoginSignup/LogInForm";
 import Memories from "./Memories/Memories";
+import AllMemories from "./Memories/AllMemories";
 import FullMemory from "./Memories/FullMemory";
 import UserMemories from "./Memories/UserMemories";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LandingPage from "./MainPage/LandingPage";
 import User from "./UserProfile/User";
+import EditProfile from "./UserProfile/EditProfile";
 import Diary from "./Diary/Diary";
 
 function App() {
@@ -54,6 +56,10 @@ function App() {
         <Memories  uID={userId} uName={userName} uToken={userToken}/>
       </Route>
 
+      <Route path="/allMemories" exact>
+        <AllMemories  uID={userId} uName={userName} uToken={userToken}/>
+      </Route>
+
       <Route path="/myMemories" exact>
         <UserMemories exact component={UserMemories} uID={userId} uToken={userToken}/>
       </Route>
@@ -68,6 +74,10 @@ function App() {
 
       <Route path="/user" exact>
         <User uID={userId} uName={userName} uToken={userToken} />
+      </Route>
+
+      <Route path="/editProfile" exact>
+        <EditProfile uID={userId} uName={userName} uToken={userToken} />
       </Route>
 
     </Router>

@@ -3,22 +3,29 @@ import axios from "axios";
 import Header from "../Header/Header";
 import SingleMemory from "../Memories/SingleMemory";
 import styles from "./User.module.css";
-import {Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import Card from "./FollowerModal.jsx";
+
+const override = css`
+display: block;
+margin: 50px auto;
+`;
 
 function User(){
 
   let history = useHistory();
   const location = useLocation();
 
+  const [loading, setLoading] = useState(true);
   const [followersList, setFollowersList] = useState([]);
   const [allFollowers, setAllFollowers] = useState({
     followers: []
   });
   const [followingList, setFollowingList] = useState([]);
-  const [allFollowing, setAllFollowing] = useState({
-    following: []
-  });
+
   const [userFollowingList, setUserFollowingList] = useState([]);
   const [allUserFollowing, setAllUserFollowing] = useState({
     following: []
@@ -40,9 +47,13 @@ function User(){
 
   const loggedInUser = localStorage.getItem("userData");
 
+  function sleep(ms) {
+     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   useEffect(() => {
     const loggedInUser = localStorage.getItem("userData");
-
+    async function fetchData(){
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser);
 
@@ -85,6 +96,7 @@ function User(){
       var bool = true;
 
       axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
+
         setFollowersList(res.data.user.followers!==null ? res.data.user.followers : []);
         setFollowingList(res.data.user.following!==null ? res.data.user.following : []);
         for (var index = 0; index < followersList.length; index++) {
@@ -103,12 +115,7 @@ function User(){
             followers: res.data.user.followers!==null ? res.data.user.followers : []
           };
         });
-        setAllFollowing((preValues) => {
-          return {
-            ...preValues,
-            following: res.data.user.following!==null ? res.data.user.following : []
-          }
-        });
+
         setUserInfo((preValues) => {
           return {
             ...preValues,
@@ -121,78 +128,18 @@ function User(){
             following: res.data.following,
             image: res.data.user.image
           };
-        })
-      })
+        });
+      });
+      await sleep(2000);
+      setLoading(false);
     }
     else{
       history.push("/login");
     }
+  }
+  fetchData();
+
   }, [uId, history, location.state.authorId, followersList]);
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setUserInfo((preValues) => {
-      return {
-        ...preValues,
-        [name]: value
-      };
-    });
-    console.log(userInfo.bio);
-  }
-
-  function update(){
-
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-
-      const config = {
-        headers: { "Authorization": "Bearer " + foundUser.token }
-      };
-
-      const formData = new FormData();
-
-      console.log(userInfo.bio);
-      formData.append("username", userInfo.username);
-      formData.append("bio", userInfo.bio);
-      formData.append("interests", userInfo.interests);
-      formData.append("image", userInfo.image);
-
-      axios.patch(`${process.env.REACT_APP_SERVER}user/${uId}`, formData, config).then(response => {
-          console.log(response.data);
-          axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
-                console.log(res.data.user);
-                setUserInfo((preValues) => {
-                  return {
-                    username: res.data.user.username,
-                    bio: res.data.user.bio,
-                    interests: res.data.user.interests,
-                    image: res.data.user.image
-                  };
-                });
-            });
-      });
-    }
-  }
-
-  function upload(event){
-    console.log(userInfo.bio);
-    setUserInfo((preValues) => {
-      return {
-        ...preValues,
-        image: event.target.files[0]
-      };
-    });
-
-  }
-
-  function removePic(){
-    setUserInfo((preValues) => {
-      return {
-        ...preValues,
-        image: ""
-      };
-    });
-  }
 
   function changeFollow(){
     const loggedInUser = localStorage.getItem("userData");
@@ -327,12 +274,22 @@ function User(){
     }
   }
 
+  function edit(){
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      history.push({
+            pathname: '/editProfile',
+            state: { authorId: foundUser.user._id }
+          });
+    }
+  }
 
   return (
-
     <div>
-      <Header hOption3="Home" hOptionFav="Favorites" favorites={userInfo.favs} isAuthor={isAuthor}/>
-      <div className="mt-5 d-flex justify-content-center">
+      <Header header1="Explore" hOption3="Home" hOptionFav="Favorites" favorites={userInfo.favs} isAuthor={isAuthor}/>
+      <MoonLoader speedMultiplier={0.5} css={override} loading={loading} />
+      { !loading &&
+      (<div className="mt-5 d-flex justify-content-center">
         <div className={`${styles.userCard} p-3`}>
           <div className="d-flex">
             <div>
@@ -359,13 +316,13 @@ function User(){
                 </button>
               </div>
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
-                      className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-              <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
-                      className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter2">Change Profile Picture</button>
+                      className="btn btn-outline-dark" onClick={edit}>Edit</button>
             </div>
           </div>
         </div>
       </div>
+      )
+      }
       <div className="modal fade" id="followerModal">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -373,20 +330,13 @@ function User(){
               <h5 className="modal-title">Followers</h5>
             </div>
             {followersList.slice(0).reverse().map((follower, index) => {
-              console.log(follower.image);
               return (
-                <div className={`${styles.card} p-2`}>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="user d-flex flex-row align-items-center">
-                      <img src={process.env.REACT_APP_SERVER + follower.image} alt="profile_img" width="30" class="user-img rounded-circle mr-2" />
-                      <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}}
-                        to={{pathname: '/user', state: { authorId: follower._id }}}>
-                        {follower.username}
-                      </Link>
-                    </div>
-                  </div>
-
-                </div>
+                <Card
+                  key={index}
+                  img={follower.image}
+                  id={follower._id}
+                  username={follower.username}
+                />
               );
             })}
           </div>
@@ -398,59 +348,16 @@ function User(){
             <div className="modal-header">
               <h5 className="modal-title">Following</h5>
             </div>
-            {userFollowingList.slice(0).reverse().map((following, index) => {
-              console.log(following.image);
+            {followingList.slice(0).reverse().map((following, index) => {
               return (
-                <div className={`${styles.card} p-2`}>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="user d-flex flex-row align-items-center">
-                      <img src={process.env.REACT_APP_SERVER + following.image} alt="profile_img" width="30" className={`${styles.userImg} rounded-circle mr-2`} />
-                      <Link className="nav-link nav-item" style={{marginBottom:"7px", color:"#000000"}}
-                        to={{pathname: '/user', state: { authorId: following._id }}}>
-                        {following.username}
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <Card
+                  key={index}
+                  img={following.image}
+                  id={following._id}
+                  username={following.username}
+                />
               );
             })}
-          </div>
-        </div>
-      </div>
-      <div className="modal fade" id="exampleModalCenter" >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Your Profile</h5>
-            </div>
-            <div className="modal-body">
-              <label><b>Add Bio</b></label>
-              <textarea onChange={handleChange} name="bio" value={userInfo.bio} className="form-control" rows="2"/>
-            </div>
-            <div className="modal-footer">
-              <button type="button" onClick={update} className="btn btn-outline-dark" data-dismiss="modal">Done</button>
-              <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="modal fade" id="exampleModalCenter2" >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Change Your Profile Picture</h5>
-            </div>
-            <div className="modal-body">
-              <label style={{marginLeft:"7px"}}><b>Upload Profile Picture</b></label>
-              <input type="file" multiple name="image" onChange={upload} />
-            </div>
-            <div className="modal-body">
-              <button type="button" onClick={removePic} className="btn btn-outline-dark">Remove Profile Picture</button>
-            </div>
-            <div className="modal-footer">
-              <button type="button" onClick={update} className="btn btn-outline-dark" data-dismiss="modal">Done</button>
-              <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Close</button>
-            </div>
           </div>
         </div>
       </div>

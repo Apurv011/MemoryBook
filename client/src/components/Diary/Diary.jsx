@@ -4,6 +4,13 @@ import CreateArea from "../CreateArea/CreateArea";
 import SingleDay from "./SingleDay";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import { MoonLoader } from "react-spinners";
+import { css } from "@emotion/react";
+
+const override = css`
+display: block;
+margin: auto;
+`;
 
 function Diary(props){
 
@@ -12,6 +19,7 @@ function Diary(props){
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const [userDays, setUserDays] = useState([]);
 
@@ -32,6 +40,7 @@ function Diary(props){
             return day.user_id === props.uID;
           });
         });
+        setLoading(false);
       }).catch((error) => {
         console.log(error.response.status);
         history.push("/login");
@@ -84,11 +93,12 @@ function getData(id){
 
   return (
     <div>
-      <Header hOption3="Home"/>
+      <Header header1="Explore" hOption3="Home"/>
       <CreateArea userId={props.uID}
                   userName={props.uName}
                   uToken={props.uToken}
                   isImg={false} />
+      <MoonLoader speedMultiplier={0.5} css={override} loading={loading} />
         <div className="row" style={{margin: "25px 50px"}}>
         {userDays.slice(0).reverse().map((day, index) => {
           return (

@@ -20,7 +20,7 @@ function LogInForm(props){
           localStorage.clear();
           localStorage.setItem('userData', JSON.stringify(response.data));
           props.getUser(response.data.user._id, response.data.user.username, response.data.token);
-          history.push('/memories');
+          history.push('/allMemories');
       }
       else{
         console.log(response.data);

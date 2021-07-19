@@ -22,6 +22,10 @@ function Header(props) {
     history.push('/memories');
   }
 
+  function allMemories(){
+    history.push('/allMemories');
+  }
+
   function myDiary(){
     history.push('/myDiary');
   }
@@ -48,6 +52,11 @@ function Header(props) {
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{marginLeft: "60px"}}>
       <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <button className="nav-link btn btn-link" onClick={props.header1==="Explore" ? allMemories : memories}>
+            {props.header1==="Explore" ? "Explore" : "Home"}
+          </button>
+        </li>
         <li className="nav-item">
           <button className="nav-link btn btn-link" onClick={props.hOption==="My Memories" ? myMemories : memories}>{props.hOption}</button>
         </li>
