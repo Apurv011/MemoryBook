@@ -54,88 +54,88 @@ function User(){
   useEffect(() => {
     const loggedInUser = localStorage.getItem("userData");
     async function fetchData(){
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
+      if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
 
-      const config = {
-        headers: { "Authorization": "Bearer " + foundUser.token }
-      };
+        const config = {
+          headers: { "Authorization": "Bearer " + foundUser.token }
+        };
 
-      if(location.state.authorId === foundUser.user._id){
-        setUId(foundUser.user._id);
-        setIsAuthor(false);
-      }
-      else{
-        setUId(location.state.authorId);
-        setIsAuthor(true);
-      }
+        if(location.state.authorId === foundUser.user._id){
+          setUId(foundUser.user._id);
+          setIsAuthor(false);
+        }
+        else{
+          setUId(location.state.authorId);
+          setIsAuthor(true);
+        }
 
-      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories/`, config).then(res => {
-        console.log(res.data);
-        setUserMemories(() => {
-          return res.data.memories.filter((memory) => {
-            return memory.user_id === uId;
+        axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories/`, config).then(res => {
+          console.log(res.data);
+          setUserMemories(() => {
+            return res.data.memories.filter((memory) => {
+              return memory.user_id === uId;
+            });
+          });
+        }).catch((error) => {
+          console.log(error.response.status);
+          history.push("/login");
+        });
+
+        axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
+          setUserFollowingList(res.data.user.following!==null ? res.data.user.following : []);
+
+          setAllUserFollowing((preValues) => {
+            return {
+              ...preValues,
+              following: res.data.user.following!==null ? res.data.user.following : []
+            }
+          });
+        })
+
+        var bool = true;
+
+        axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
+
+          setFollowersList(res.data.user.followers!==null ? res.data.user.followers : []);
+          setFollowingList(res.data.user.following!==null ? res.data.user.following : []);
+          for (var index = 0; index < followersList.length; index++) {
+            if(followersList[index] === foundUser.user._id) {
+              setIsFollowing(true);
+              bool = false;
+              break;
+            }
+          }
+          if(bool){
+            setIsFollowing(false);
+          }
+          setAllFollowers((preValues) => {
+            return {
+              ...preValues,
+              followers: res.data.user.followers!==null ? res.data.user.followers : []
+            };
+          });
+
+          setUserInfo((preValues) => {
+            return {
+              ...preValues,
+              username: res.data.user.username,
+              _id: res.data.user._id,
+              bio: res.data.user.bio,
+              interests: res.data.user.interests,
+              favs: res.data.user.favs,
+              followers: res.data.followers,
+              following: res.data.following,
+              image: res.data.user.image
+            };
           });
         });
-      }).catch((error) => {
-        console.log(error.response.status);
+        await sleep(1500);
+        setLoading(false);
+      }
+      else{
         history.push("/login");
-      });
-
-      axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
-        setUserFollowingList(res.data.user.following!==null ? res.data.user.following : []);
-
-        setAllUserFollowing((preValues) => {
-          return {
-            ...preValues,
-            following: res.data.user.following!==null ? res.data.user.following : []
-          }
-        });
-      })
-
-      var bool = true;
-
-      axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
-
-        setFollowersList(res.data.user.followers!==null ? res.data.user.followers : []);
-        setFollowingList(res.data.user.following!==null ? res.data.user.following : []);
-        for (var index = 0; index < followersList.length; index++) {
-          if(followersList[index]._id === foundUser.user._id) {
-            setIsFollowing(true);
-            bool = false;
-            break;
-          }
-        }
-        if(bool){
-          setIsFollowing(false);
-        }
-        setAllFollowers((preValues) => {
-          return {
-            ...preValues,
-            followers: res.data.user.followers!==null ? res.data.user.followers : []
-          };
-        });
-
-        setUserInfo((preValues) => {
-          return {
-            ...preValues,
-            username: res.data.user.username,
-            _id: res.data.user._id,
-            bio: res.data.user.bio,
-            interests: res.data.user.interests,
-            favs: res.data.user.favs,
-            followers: res.data.followers,
-            following: res.data.following,
-            image: res.data.user.image
-          };
-        });
-      });
-      await sleep(2000);
-      setLoading(false);
-    }
-    else{
-      history.push("/login");
-    }
+      }
   }
   fetchData();
 
@@ -153,7 +153,7 @@ function User(){
         };
 
         for (var index = 0; index < followersList.length; index++) {
-          if(followersList[index]._id === foundUser.user._id) {
+          if(followersList[index] === foundUser.user._id) {
             followersList.splice(index, 1);
             break;
           }
@@ -167,7 +167,7 @@ function User(){
         });
 
         for (var index1 = 0; index1 < userFollowingList.length; index1++) {
-          if(userFollowingList[index1]._id === location.state.authorId) {
+          if(userFollowingList[index1] === location.state.authorId) {
             userFollowingList.splice(index1, 1);
             break;
           }
@@ -181,7 +181,6 @@ function User(){
         });
 
         axios.patch(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, allUserFollowing, config).then(response => {
-            console.log(response.data);
             axios.get(`${process.env.REACT_APP_SERVER}user/${foundUser.user._id}`, config).then(res => {
                 setUserFollowingList(res.data.user.following!==null ? res.data.user.following : []);
                 setAllUserFollowing((preValues) => {
@@ -197,7 +196,6 @@ function User(){
         });
 
         axios.patch(`${process.env.REACT_APP_SERVER}user/${location.state.authorId}`, allFollowers, config).then(response => {
-            console.log(response.data);
             axios.get(`${process.env.REACT_APP_SERVER}user/${location.state.authorId}`, config).then(res => {
                 setFollowersList(res.data.user.followers!==null ? res.data.user.followers : []);
                 setAllFollowers((preValues) => {
@@ -223,7 +221,7 @@ function User(){
         const config = {
           headers: { "Authorization": "Bearer " + foundUser.token }
         };
-        followersList.push(foundUser.user);
+        followersList.push(foundUser.user._id);
 
         setAllFollowers((preValues) => {
           return {
@@ -231,7 +229,7 @@ function User(){
           };
         });
 
-        userFollowingList.push(userInfo);
+        userFollowingList.push(userInfo._id);
 
         setAllUserFollowing((preValues) => {
           return {
@@ -316,7 +314,7 @@ function User(){
                 </button>
               </div>
               <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
-                      className="btn btn-outline-dark" onClick={edit}>Edit</button>
+                      className="btn btn-outline-dark" onClick={edit}>Edit My Profile</button>
             </div>
           </div>
         </div>
@@ -329,16 +327,13 @@ function User(){
             <div className="modal-header">
               <h5 className="modal-title">Followers</h5>
             </div>
-            {followersList.slice(0).reverse().map((follower, index) => {
+            {followersList.length!==0 ? followersList.slice(0).reverse().map((followerId, index) => {
               return (
                 <Card
-                  key={index}
-                  img={follower.image}
-                  id={follower._id}
-                  username={follower.username}
+                  id={followerId}
                 />
               );
-            })}
+            }) : <p className="p-2">No Followers Yet!</p>}
           </div>
         </div>
       </div>
@@ -348,16 +343,13 @@ function User(){
             <div className="modal-header">
               <h5 className="modal-title">Following</h5>
             </div>
-            {followingList.slice(0).reverse().map((following, index) => {
+            {followingList.length!==0 ? followingList.slice(0).reverse().map((followingId, index) => {
               return (
                 <Card
-                  key={index}
-                  img={following.image}
-                  id={following._id}
-                  username={following.username}
+                  id={followingId}
                 />
               );
-            })}
+            }) : <p className="p-2">Following No one Yet!</p>}
           </div>
         </div>
       </div>

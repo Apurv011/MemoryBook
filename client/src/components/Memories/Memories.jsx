@@ -37,7 +37,7 @@ function Memories(props) {
         setAllMemories(() => {
           return res.data.memories.filter((memory) => {
               for(var i=0; i<following.length; i++){
-                if(following[i]._id === memory.user_id) return true;
+                if(following[i] === memory.user_id) return true;
               }
               return false;
           });

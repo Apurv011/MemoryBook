@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "../Header/Header";
-import SingleMemory from "../Memories/SingleMemory";
 import styles from "./User.module.css";
 import {useHistory} from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { css } from "@emotion/react";
+import { MoonLoader } from "react-spinners";
+
+const override = css`
+display: block;
+margin: 50px auto;
+`;
 
 function EditProfile(){
 
@@ -14,64 +20,58 @@ function EditProfile(){
   const [userInfo, setUserInfo] = useState({
     username:"",
     bio: "",
-    interests: "",
     image:"",
     favs:[]
   });
-  const [userMemories, setUserMemories] = useState([]);
   const [uId, setUId] = useState("");
   const [isAuthor, setIsAuthor] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loggedInUser = localStorage.getItem("userData");
 
+  function sleep(ms) {
+     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   useEffect(() => {
     const loggedInUser = localStorage.getItem("userData");
+    async function fetchData(){
+      if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
 
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
+        const config = {
+          headers: { "Authorization": "Bearer " + foundUser.token }
+        };
 
-      const config = {
-        headers: { "Authorization": "Bearer " + foundUser.token }
-      };
+        if(location.state.authorId === foundUser.user._id){
+          setUId(foundUser.user._id);
+          setIsAuthor(false);
+        }
+        else{
+          setUId(location.state.authorId);
+          setIsAuthor(true);
+        }
 
-      if(location.state.authorId === foundUser.user._id){
-        setUId(foundUser.user._id);
-        setIsAuthor(false);
-      }
-      else{
-        setUId(location.state.authorId);
-        setIsAuthor(true);
-      }
-
-      axios.get(`${process.env.REACT_APP_SERVER}memory/allmemories/`, config).then(res => {
-        console.log(res.data);
-        setUserMemories(() => {
-          return res.data.memories.filter((memory) => {
-            return memory.user_id === uId;
+        axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
+          console.log(res.data.user);
+          setUserInfo((preValues) => {
+            return {
+              ...preValues,
+              username: res.data.user.username,
+              bio: res.data.user.bio,
+              favs: res.data.user.favs,
+              image: res.data.user.image
+            };
           });
         });
-      }).catch((error) => {
-        console.log(error.response.status);
+        await sleep(1500);
+        setLoading(false);
+      }
+      else{
         history.push("/login");
-      });
-
-      axios.get(`${process.env.REACT_APP_SERVER}user/${uId}`, config).then(res => {
-        console.log(res.data.user);
-        setUserInfo((preValues) => {
-          return {
-            ...preValues,
-            username: res.data.user.username,
-            bio: res.data.user.bio,
-            interests: res.data.user.interests,
-            favs: res.data.user.favs,
-            image: res.data.user.image
-          };
-        })
-      })
+      }
     }
-    else{
-      history.push("/login");
-    }
+    fetchData();
   }, [uId, history, location.state.authorId]);
 
   function handleChange(event) {
@@ -99,7 +99,6 @@ function EditProfile(){
       console.log(userInfo.bio);
       formData.append("username", userInfo.username);
       formData.append("bio", userInfo.bio);
-      formData.append("interests", userInfo.interests);
       formData.append("image", userInfo.image);
 
       axios.patch(`${process.env.REACT_APP_SERVER}user/${uId}`, formData, config).then(response => {
@@ -110,7 +109,6 @@ function EditProfile(){
                   return {
                     username: res.data.user.username,
                     bio: res.data.user.bio,
-                    interests: res.data.user.interests,
                     image: res.data.user.image
                   };
                 });
@@ -143,27 +141,30 @@ function EditProfile(){
 
     <div>
       <Header header1="Explore" hOption3="Home" hOptionFav="Favorites" favorites={userInfo.favs} isAuthor={isAuthor}/>
-      <div className="mt-5 d-flex justify-content-center">
-        <div className={`${styles.userCard} p-3`}>
-          <div className="d-flex">
-            <div>
-              <img src={userInfo.image==="" ? "https://www.watershed.co.uk/engage/wp-content/uploads/2010/08/blank-profile.jpg"
+      <MoonLoader speedMultiplier={0.5} css={override} loading={loading} />
+      {!loading &&
+        (
+          <div className="mt-5 d-flex justify-content-center">
+            <div style={{marginBottom:"30px"}} className={`${styles.userCard} p-3`}>
+              <div className="d-flex justify-content-center">
+                <img src={userInfo.image==="" ? "https://www.watershed.co.uk/engage/wp-content/uploads/2010/08/blank-profile.jpg"
                                             : process.env.REACT_APP_SERVER + userInfo.image}
-                                            alt="..." className={styles.userCardImg} />
-            </div>
-            <div style={{marginTop:"15px"}} className="ml-3">
-              <h2>{userInfo.username}</h2>
-              <p className={styles.bio}>{userInfo.bio}</p>
-              <h6>Interests</h6>
-              <p>{userInfo.interests}</p>
-              <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
-                      className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-              <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
-                      className="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter2">Change Profile Picture</button>
+                                            alt="..." width="380" className="rounded-circle mr-2" />
+              </div>
+              <div style={{marginTop:"15px", textAlign:"center"}} className="ml-3">
+                <h2>{userInfo.username}</h2>
+                <p className={styles.bio}>{userInfo.bio}</p>
+              </div>
+              <div className="d-flex justify-content-between">
+                <button style={!isAuthor ? { visibility: "visible", marginTop: "16px", marginRight: "20px"} : { visibility: "hidden" }}
+                    className="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">Edit My Bio</button>
+                <button style={!isAuthor ? { visibility: "visible", marginTop: "16px"} : { visibility: "hidden" }}
+                    className="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter2">Change Profile Picture</button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )
+      }
       <div className="modal fade" id="exampleModalCenter" >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -171,15 +172,11 @@ function EditProfile(){
               <h5 className="modal-title">Edit Your Profile</h5>
             </div>
             <div className="modal-body">
-              <label><b>Interests</b></label>
-              <input onChange={handleChange} name="interests" value={userInfo.interests} className="form-control"/>
-            </div>
-            <div className="modal-body">
               <label><b>Add Bio</b></label>
-              <textarea onChange={handleChange} name="bio" value={userInfo.bio} className="form-control" rows="2"/>
+              <textarea maxlength="50" onChange={handleChange} name="bio" value={userInfo.bio} className="form-control" rows="2"/>
             </div>
             <div className="modal-footer">
-              <button type="button" onClick={update} className="btn btn-outline-dark" data-dismiss="modal">Done</button>
+              <button type="button" onClick={update} className="btn btn-outline-success" data-dismiss="modal">Done</button>
               <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -196,31 +193,14 @@ function EditProfile(){
               <input type="file" multiple name="image" onChange={upload} />
             </div>
             <div className="modal-body">
-              <button type="button" onClick={removePic} className="btn btn-outline-dark">Remove Profile Picture</button>
+              <button type="button" onClick={removePic} className="btn btn-danger">Remove Profile Picture</button>
             </div>
             <div className="modal-footer">
-              <button type="button" onClick={update} className="btn btn-outline-dark" data-dismiss="modal">Done</button>
+              <button type="button" onClick={update} className="btn btn-outline-success d-flex" data-dismiss="modal">Done</button>
               <button type="button" className="btn btn-outline-dark" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
-      </div>
-      <div style={{marginTop:"50px"}}>
-      {userMemories.slice(0).reverse().map((memory, index) => {
-        return (
-          <SingleMemory
-          key={index}
-          id={memory._id}
-          uID={memory.user_id}
-          title={memory.title}
-          btnTitle={'Read More'}
-          content={memory.content}
-          author={memory.author_name}
-          date={memory.date}
-          image={memory.image}
-          />
-        );
-        })}
       </div>
     </div>
 
